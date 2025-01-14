@@ -19,32 +19,18 @@ public partial class Transmision2 : Form
     {
         try
         {
-
+            // Asegúrate de que WebView2 esté inicializado
             await browser.EnsureCoreWebView2Async(null);
 
-
+            // Configuración del WebView2
             browser.CoreWebView2.NavigationCompleted += OnNavigationCompleted;
 
-
-            var currentScreen = Screen.FromPoint(Cursor.Position);
-            int screenWidth = currentScreen.Bounds.Width;
-            int fixedHeight = 1000;
-
-            browser.Size = new Size(screenWidth, fixedHeight - 50);
-
-
-            this.ClientSize = new Size(screenWidth, fixedHeight);
-
-
-            this.Location = new Point(currentScreen.Bounds.X, currentScreen.Bounds.Y + 80); // Posicionar en el monitor actual, ajustado un poco hacia abajo
-
-
+            // Configurar comportamientos específicos
             ConfigureWebView2PopupBlocking();
-
 
             ConfigureWebView2RequestBlocking();
 
-
+            // Navegar a la URL especificada
             string url = "https://playviper.com/";
             if (!string.IsNullOrEmpty(url) && Uri.IsWellFormedUriString(url, UriKind.Absolute))
             {
@@ -60,6 +46,21 @@ public partial class Transmision2 : Form
             MessageBox.Show($"Error al inicializar WebView2: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
+
+    protected override void OnLoad(EventArgs e)
+    {
+        base.OnLoad(e);
+
+        // Obtén la pantalla actual
+        var currentScreen = Screen.FromPoint(Cursor.Position);
+        int screenWidth = currentScreen.Bounds.Width;
+        int fixedHeight = 1000; 
+
+        // Configura el tamaño y posición del formulario antes de que sea visible
+        this.ClientSize = new Size(screenWidth, fixedHeight);
+        this.Location = new Point(currentScreen.Bounds.X, currentScreen.Bounds.Y + 80); // Respeta el desplazamiento vertical de 80 píxeles
+    }
+
 
 
     private void OnNavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
@@ -121,6 +122,8 @@ public partial class Transmision2 : Form
         }
     }
 
+
+
     private void ConfigureWebView2RequestBlocking()
     {
         if (browser.CoreWebView2 != null)
@@ -153,7 +156,7 @@ public partial class Transmision2 : Form
         "https://cdn.amnew.net/",
         "https://us.opencan.net/",
         "https://xml-v4.pushub.net"
-
+         
     };
 
     private void HandleWebResourceRequested(object sender, CoreWebView2WebResourceRequestedEventArgs e)

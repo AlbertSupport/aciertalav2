@@ -251,8 +251,8 @@ namespace TerminalV2
                     }
                 }
 
-                // Esperar 2 segundos antes de reabrir la aplicación
-                Task.Delay(2000).Wait();
+                // Esperar 1 segundos antes de reabrir la aplicación
+                Task.Delay(1000).Wait();
 
                 // Ruta al acceso directo en el escritorio
                 string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
@@ -1156,6 +1156,9 @@ namespace TerminalV2
                     new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 160, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 160, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("CHROME", "https://www.google.com/", 160, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("ACTUALIZAR", null, 160, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,
+                        (sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 160, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
                 // Cambiar la ubicación inicial para los botones en Full HD
@@ -1725,8 +1728,21 @@ namespace TerminalV2
         /// </summary>
         private void CreateButtons(ButtonConfig[] buttonConfigs, int startX, int startY)
         {
+            // Validar que buttonConfigs no sea nulo ni vacío
+            if (buttonConfigs == null || buttonConfigs.Length == 0)
+            {
+                throw new ArgumentNullException(nameof(buttonConfigs), "La colección de configuraciones de botones no puede ser nula o vacía.");
+            }
+
+            // Validar que ningún elemento dentro de buttonConfigs sea nulo
+            if (buttonConfigs.Any(config => config == null))
+            {
+                throw new ArgumentException("Todos los elementos de buttonConfigs deben ser instancias válidas.");
+            }
+
             // Calcular el alto total requerido para el formulario basado en los botones
-            int totalHeight = buttonConfigs.Sum(config => config.Height) + (buttonConfigs.Length - 1) * buttonConfigs[0].Spacing;
+            int totalHeight = buttonConfigs.Sum(config => config.Height) +
+                              (buttonConfigs.Length - 1) * buttonConfigs[0].Spacing;
 
             // Ajustar el tamaño del formulario para que pueda contener todos los botones
             this.Size = new Size(Width, totalHeight + 700); // Ajustamos solo el tamaño de altura
@@ -1788,6 +1804,26 @@ namespace TerminalV2
                         buttonsPanel.Visible = false;  // Cerrar el panel al hacer clic en cualquier botón
                     };
                 }
+                else if (config.Label == "CABALLOS")
+                {
+                    // Configuración específica para el botón "TRANSMISION 2"
+                    button.Click += (s, e) =>
+                    {
+                        // Cerrar el formulario Transmision2 si está abierto
+                        var transmision2Form = Application.OpenForms["Transmision2"]; // Verifica si el formulario ya está abierto
+                        if (transmision2Form != null)
+                        {
+                            transmision2Form.Close(); // Cierra el formulario
+                        }
+
+                        // Abre una nueva instancia del formulario Transmision2
+                        OpenTransmision2Form();
+
+                        // Cerrar el panel de botones
+                        buttonsPanel.Visible = false;
+                    };
+                }
+
                 else if (config.Label == "TRANSMISION 2")
                 {
                     // Configuración específica para el botón "TRANSMISION 2"
@@ -1837,6 +1873,7 @@ namespace TerminalV2
                 startY += config.Height + config.Spacing;  // Mover hacia abajo con espacio entre botones
             }
         }
+
 
         private void OpenTransmision2Form()
         {

@@ -155,6 +155,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppUpdater.cs" />
+    <Compile Include="Caballos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Caballos.Designer.cs">
+      <DependentUpon>Caballos.cs</DependentUpon>
+    </Compile>
     <Compile Include="CustomUpdateDialog.cs">
       <SubType>Form</SubType>
     </Compile>
