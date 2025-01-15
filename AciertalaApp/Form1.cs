@@ -2225,7 +2225,7 @@ namespace TerminalV2
         public string ImageName { get; set; }        // Nombre de la imagen asociada al botón
         public EventHandler OnClick { get; set; }    // Delegado para manejar eventos Click personalizados
 
-
+         
         public ButtonConfig(
             string label,
             string url,
