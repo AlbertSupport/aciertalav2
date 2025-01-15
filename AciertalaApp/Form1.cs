@@ -390,19 +390,15 @@ namespace TerminalV2
             this.TransparencyKey = Color.Lime;
 
 
-            // Variable para la configuración de botones
+            // Variable para las configuraciones de botones
             ButtonConfig[] buttonConfigs = null;
-
-            if (buttonConfigs == null || buttonConfigs.Length == 0)
-            {
-                throw new ArgumentNullException(nameof(buttonConfigs), "La colección de configuraciones de botones no puede ser nula o vacía.");
-            }
 
             // Definir las ubicaciones iniciales de los botones
             int startX = 5;
             int startY = 400;
 
             // Configuración según resolución
+            Button homeButton = null;
             if (screenWidth == 1920 && screenHeight == 1080) // Full HD
             {
                 buttonConfigs = new ButtonConfig[]
