@@ -389,8 +389,14 @@ namespace TerminalV2
             this.BackColor = Color.Lime;
             this.TransparencyKey = Color.Lime;
 
+
             // Variable para la configuración de botones
             ButtonConfig[] buttonConfigs = null;
+
+            if (buttonConfigs == null || buttonConfigs.Length == 0)
+            {
+                throw new ArgumentNullException(nameof(buttonConfigs), "La colección de configuraciones de botones no puede ser nula o vacía.");
+            }
 
             // Definir las ubicaciones iniciales de los botones
             int startX = 5;
@@ -419,10 +425,7 @@ namespace TerminalV2
                 startX = 1710; // Modificado para Full HD
                 startY = 80; // Modificado para Full HD
 
-                if (buttonConfigs == null || buttonConfigs.Length == 0)
-                {
-                    throw new ArgumentNullException(nameof(buttonConfigs), "La colección de configuraciones de botones no puede ser nula o vacía.");
-                }
+                
 
                 // Crear el botón "Home" para la resolución 1920x1080
                 homeButton = new Button()
