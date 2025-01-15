@@ -40,11 +40,6 @@ namespace TerminalV2
         private Button homeButton;   // El botón "Home" que muestra los botones
 
 
-
-
- 
-
-
         [DllImport("user32.dll")]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 
@@ -406,24 +401,22 @@ namespace TerminalV2
             {
                 buttonConfigs = new ButtonConfig[]
                 {
-                    new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 279, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 279, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 279, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 279, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 279, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 279, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 279, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("CHROME", "https://www.google.com/", 279, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("REGISTRO", "https://www.registro.com/", 279, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0),
-                    new ButtonConfig("ACTUALIZAR", null, 279, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,
-    (sender, args) => RestartAciertala()),
-
-                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 279, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("CHROME", "https://www.google.com/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("REGISTRO", "https://www.registro.com/", 130, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                    new ButtonConfig("ACTUALIZAR", null, 130, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
 
                 // Cambiar la ubicación inicial para los botones en Full HD
-                startX = 1560; // Modificado para Full HD
+                startX = 1710; // Modificado para Full HD
                 startY = 80; // Modificado para Full HD
 
 
@@ -431,9 +424,9 @@ namespace TerminalV2
                 homeButton = new Button()
                 {
                     Text = "Home",
-                    Width = 279,
+                    Width = 130,
                     Height = 80,
-                    Left = 1560,
+                    Left = 1710,
                     Top = 0,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
@@ -447,7 +440,7 @@ namespace TerminalV2
                     // Alinear el texto a la izquierda
                     TextAlign = ContentAlignment.MiddleLeft,
                     // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(70, 0, 70, 0)
+                    Padding = new Padding(0, 0, 0, 0)
                 };
             }
             else if (screenWidth == 1680 && screenHeight == 1050) // 1680x1050
@@ -456,11 +449,15 @@ namespace TerminalV2
                 {
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION", "https://365livesport.org/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("CHROME", "https://www.google.com/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("REGISTRO", "https://www.registro.com/", 275, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("ACTUALIZAR", null, 275, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
                 // Cambiar la ubicación inicial para los botones en Full HD
@@ -489,7 +486,7 @@ namespace TerminalV2
                     // Alinear el texto a la izquierda
                     TextAlign = ContentAlignment.MiddleLeft,
                     // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(50, 0, 50, 0)
+                    Padding = new Padding(0, 0, 0, 0)
                 };
             }
             else if (screenWidth == 1600 && screenHeight == 900) // 1600x900
@@ -498,11 +495,15 @@ namespace TerminalV2
                 {
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION", "https://365livesport.org/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("CHROME", "https://www.google.com/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("REGISTRO", "https://www.registro.com/", 275, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("ACTUALIZAR", null, 275, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
                 startX = 1240; 
@@ -536,11 +537,15 @@ namespace TerminalV2
                 {
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION", "https://365livesport.org/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("CHROME", "https://www.google.com/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("REGISTRO", "https://www.registro.com/", 200, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("ACTUALIZAR", null, 200, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
                 startX = 1160;
@@ -574,11 +579,15 @@ namespace TerminalV2
                 {
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION", "https://365livesport.org/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("CHROME", "https://www.google.com/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("REGISTRO", "https://www.registro.com/", 200, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("ACTUALIZAR", null, 200, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
                 startX = 1120;
@@ -612,11 +621,15 @@ namespace TerminalV2
                 {
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("CHROME", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("REGISTRO", "https://www.registro.com/", 200, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("ACTUALIZAR", null, 200, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
 
@@ -651,11 +664,15 @@ namespace TerminalV2
                 {
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("CHROME", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("REGISTRO", "https://www.registro.com/", 200, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("ACTUALIZAR", null, 200, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
                 startX = 1080;
@@ -689,11 +706,15 @@ namespace TerminalV2
                 {
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("CHROME", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("REGISTRO", "https://www.registro.com/", 200, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("ACTUALIZAR", null, 200, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
                 startX = 1000;
@@ -727,11 +748,15 @@ namespace TerminalV2
                 {
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("CHROME", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("REGISTRO", "https://www.registro.com/", 200, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("ACTUALIZAR", null, 200, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
                 startX = 1000;
@@ -765,11 +790,15 @@ namespace TerminalV2
                 {
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("CHROME", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("REGISTRO", "https://www.registro.com/", 200, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("ACTUALIZAR", null, 200, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
                 startX = 1000;
@@ -803,11 +832,15 @@ namespace TerminalV2
                 {
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("CHROME", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("REGISTRO", "https://www.registro.com/", 200, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("ACTUALIZAR", null, 200, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
                 startX = 1000;
@@ -841,11 +874,15 @@ namespace TerminalV2
                 {
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("CHROME", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("REGISTRO", "https://www.registro.com/", 200, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("ACTUALIZAR", null, 200, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
                 startX = 1000;
@@ -879,11 +916,15 @@ namespace TerminalV2
                 {
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION", "https://365livesport.org/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("CHROME", "https://www.google.com/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("REGISTRO", "https://www.registro.com/", 240, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("ACTUALIZAR", null, 240, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
                 startX = 850;
@@ -917,11 +958,15 @@ namespace TerminalV2
                 {
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION", "https://365livesport.org/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("CHROME", "https://www.google.com/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("REGISTRO", "https://www.registro.com/", 240, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("ACTUALIZAR", null, 240, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
                 startX = 720;
@@ -955,11 +1000,15 @@ namespace TerminalV2
                 {
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION", "https://365livesport.org/", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("CHROME", "https://www.google.com/", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("REGISTRO", "https://www.registro.com/", 150, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("ACTUALIZAR", null, 150, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
                 startX = 590;
@@ -1156,8 +1205,7 @@ namespace TerminalV2
                     new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 160, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 160, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("CHROME", "https://www.google.com/", 160, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("ACTUALIZAR", null, 160, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,
-                        (sender, args) => RestartAciertala()),
+                    new ButtonConfig("ACTUALIZAR", null, 160, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
                     new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 160, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
@@ -1198,6 +1246,8 @@ namespace TerminalV2
                     new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 250, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 250, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("CHROME", "https://www.google.com/", 250, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("ACTUALIZAR", null, 250, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 250, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
                 // Cambiar la ubicación inicial para los botones en Full HD
@@ -1238,6 +1288,8 @@ namespace TerminalV2
                     new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 235, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 235, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("CHROME", "https://www.google.com/", 235, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("ACTUALIZAR", null, 235, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 250, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
                 startX = 1085;
@@ -1274,6 +1326,8 @@ namespace TerminalV2
                     new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 120, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 120, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("CHROME", "https://www.google.com/", 120, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("ACTUALIZAR", null, 235, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 250, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 };
 
                 startX = 1045;
@@ -1310,6 +1364,8 @@ namespace TerminalV2
                     new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.SHEETS.ico"),
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.ACIERTALA WEB.ico"),
                     new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
+                    new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
                 };
 
                 startX = 1010;
@@ -1346,6 +1402,8 @@ namespace TerminalV2
                     new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.SHEETS.ico"),
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.ACIERTALA WEB.ico"),
                     new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
+                    new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
                 };
 
 
@@ -1383,6 +1441,8 @@ namespace TerminalV2
                     new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.SHEETS.ico"),
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.ACIERTALA WEB.ico"),
                     new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
+                    new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
                 };
 
                 startX = 970;
@@ -1419,6 +1479,8 @@ namespace TerminalV2
                     new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.SHEETS.ico"),
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.ACIERTALA WEB.ico"),
                     new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
+                    new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
                 };
 
                 startX = 890;
@@ -1455,6 +1517,8 @@ namespace TerminalV2
                     new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.SHEETS.ico"),
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.ACIERTALA WEB.ico"),
                     new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
+                    new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
                 };
 
                 startX = 890;
@@ -1491,6 +1555,8 @@ namespace TerminalV2
                     new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 100, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.SHEETS.ico"),
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 100, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.ACIERTALA WEB.ico"),
                     new ButtonConfig("CHROME", "https://www.google.com/", 100, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
+                    new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
                 };
 
                 startX = 895;
@@ -1527,6 +1593,8 @@ namespace TerminalV2
                     new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 100, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.SHEETS.ico"),
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 100, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.ACIERTALA WEB.ico"),
                     new ButtonConfig("CHROME", "https://www.google.com/", 100, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
+                    new ButtonConfig("ACTUALIZAR", null, 100, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 100, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
                 };
 
                 startX = 895;
@@ -1563,6 +1631,8 @@ namespace TerminalV2
                     new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.SHEETS.ico"),
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.ACIERTALA WEB.ico"),
                     new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
+                    new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
                 };
 
                 startX = 890;
@@ -1599,6 +1669,8 @@ namespace TerminalV2
                     new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.SHEETS.ico"),
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.ACIERTALA WEB.ico"),
                     new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
+                    new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
                 };
 
                 startX = 860;
@@ -1635,6 +1707,8 @@ namespace TerminalV2
                     new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.SHEETS.ico"),
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.ACIERTALA WEB.ico"),
                     new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
+                    new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
                 };
 
                 startX = 730;
@@ -1671,6 +1745,8 @@ namespace TerminalV2
                     new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.SHEETS.ico"),
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.ACIERTALA WEB.ico"),
                     new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
+                    new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
                 };
 
                 startX = 675;
@@ -1806,18 +1882,19 @@ namespace TerminalV2
                 }
                 else if (config.Label == "CABALLOS")
                 {
-                    // Configuración específica para el botón "TRANSMISION 2"
+                    // Configuración específica para el botón "CABALLOS"
                     button.Click += (s, e) =>
                     {
-                        // Cerrar el formulario Transmision2 si está abierto
-                        var transmision2Form = Application.OpenForms["Transmision2"]; // Verifica si el formulario ya está abierto
-                        if (transmision2Form != null)
+                        // Cerrar el formulario Caballos si está abierto
+                        var caballosForm = Application.OpenForms["Caballos"]; // Verifica si el formulario ya está abierto
+                        if (caballosForm != null)
                         {
-                            transmision2Form.Close(); // Cierra el formulario
+                            caballosForm.Close(); // Cierra el formulario si ya está abierto
                         }
 
-                        // Abre una nueva instancia del formulario Transmision2
-                        OpenTransmision2Form();
+                        // Abre una nueva instancia del formulario Caballos
+                        var newCaballosForm = new Caballos();
+                        newCaballosForm.Show(); // Mostrar el formulario Caballos
 
                         // Cerrar el panel de botones
                         buttonsPanel.Visible = false;

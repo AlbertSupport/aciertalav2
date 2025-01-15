@@ -3,6 +3,7 @@
     private Microsoft.Web.WebView2.WinForms.WebView2 browser;
     private System.Windows.Forms.Button backButton;
     private System.Windows.Forms.Button refreshButton;
+    private System.Windows.Forms.Button fullscreenButton; // Nuevo botón "Fullscreen"
 
     /// <summary>
     /// Requerido por el diseñador.
@@ -19,7 +20,7 @@
         {
             components.Dispose();
         }
- 
+
         base.Dispose(disposing);
     }
 
@@ -34,6 +35,7 @@
         this.browser = new Microsoft.Web.WebView2.WinForms.WebView2();
         this.backButton = new System.Windows.Forms.Button();
         this.refreshButton = new System.Windows.Forms.Button();
+        this.fullscreenButton = new System.Windows.Forms.Button(); // Declaración del nuevo botón
         ((System.ComponentModel.ISupportInitialize)(this.browser)).BeginInit();
         this.SuspendLayout();
         // 
@@ -50,7 +52,7 @@
         // 
         // backButton
         // 
-        this.backButton.Location = new System.Drawing.Point(10, 10); // Ubicación en la parte superior
+        this.backButton.Location = new System.Drawing.Point(10, 10); // Ubicación en la parte superior izquierda
         this.backButton.Name = "backButton";
         this.backButton.Size = new System.Drawing.Size(100, 30);
         this.backButton.TabIndex = 1;
@@ -60,13 +62,23 @@
         // 
         // refreshButton
         // 
-        this.refreshButton.Location = new System.Drawing.Point(120, 10); // Ubicación en la parte superior
+        this.refreshButton.Location = new System.Drawing.Point(120, 10); // Ubicación a la derecha del botón "Atrás"
         this.refreshButton.Name = "refreshButton";
         this.refreshButton.Size = new System.Drawing.Size(100, 30);
         this.refreshButton.TabIndex = 2;
         this.refreshButton.Text = "Actualizar";
         this.refreshButton.UseVisualStyleBackColor = true;
         this.refreshButton.Click += new System.EventHandler(this.RefreshButton_Click);
+        // 
+        // fullscreenButton
+        // 
+        this.fullscreenButton.Location = new System.Drawing.Point(230, 10); // Ubicación a la derecha del botón "Actualizar"
+        this.fullscreenButton.Name = "fullscreenButton";
+        this.fullscreenButton.Size = new System.Drawing.Size(100, 30);
+        this.fullscreenButton.TabIndex = 3;
+        this.fullscreenButton.Text = "Fullscreen";
+        this.fullscreenButton.UseVisualStyleBackColor = true;
+        this.fullscreenButton.Click += new System.EventHandler(this.FullscreenButton_Click); 
         // 
         // Transmision2
         // 
@@ -75,6 +87,7 @@
         this.ClientSize = new System.Drawing.Size(800, 600); // Tamaño inicial, se ajustará en Load
         this.Controls.Add(this.backButton); // Colocar el botón Atrás
         this.Controls.Add(this.refreshButton); // Colocar el botón Actualizar
+        this.Controls.Add(this.fullscreenButton); // Colocar el botón Fullscreen
         this.Controls.Add(this.browser); // Colocar el WebView2 debajo de los botones
         this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
         this.Name = "Transmision2";

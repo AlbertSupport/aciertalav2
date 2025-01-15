@@ -1,39 +1,42 @@
-﻿namespace AciertalaApp
+﻿partial class Caballos
 {
-    partial class Caballos
+    private Microsoft.Web.WebView2.WinForms.WebView2 browser;
+
+    private System.ComponentModel.IContainer components = null;
+
+    protected override void Dispose(bool disposing)
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
+        if (disposing && (components != null))
         {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
+            components.Dispose();
         }
+        base.Dispose(disposing);
+    }
 
-        #region Windows Form Designer generated code
+    private void InitializeComponent()
+    {
+        this.browser = new Microsoft.Web.WebView2.WinForms.WebView2();
+        ((System.ComponentModel.ISupportInitialize)(this.browser)).BeginInit();
+        this.SuspendLayout();
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Text = "Caballos";
-        }
+        this.browser.CreationProperties = null;
+        this.browser.DefaultBackgroundColor = System.Drawing.Color.White;
+        this.browser.Dock = System.Windows.Forms.DockStyle.Fill;
+        this.browser.Location = new System.Drawing.Point(0, 0);
+        this.browser.Name = "browser";
+        this.browser.TabIndex = 0;
+        this.browser.ZoomFactor = 1.0;
 
-        #endregion
+        this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+        this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+        this.ClientSize = new System.Drawing.Size(800, 600);
+        this.Controls.Add(this.browser);
+        this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+        this.Name = "Caballos";
+        this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+        this.Text = "Caballos";
+        this.Load += new System.EventHandler(this.Caballos_Load);
+        ((System.ComponentModel.ISupportInitialize)(this.browser)).EndInit();
+        this.ResumeLayout(false);
     }
 }
