@@ -2225,7 +2225,7 @@ namespace TerminalV2
         public string ImageName { get; set; }        // Nombre de la imagen asociada al botón
         public EventHandler OnClick { get; set; }    // Delegado para manejar eventos Click personalizados
 
-        // Constructor
+
         public ButtonConfig(
             string label,
             string url,
@@ -2237,18 +2237,6 @@ namespace TerminalV2
             string imageName = null,
             EventHandler onClick = null)
         {
-
-            if (string.IsNullOrEmpty(label))
-            {
-                throw new ArgumentException("El texto del botón (Label) no puede ser nulo o vacío.", nameof(label));
-            }
-
-            if (width <= 0 || height <= 0)
-            {
-                throw new ArgumentException("El ancho y la altura del botón deben ser mayores que cero.", nameof(width));
-            }
-
-            // Asignación de propiedades
             Label = label;
             URL = url;
             Width = width;
@@ -2260,6 +2248,8 @@ namespace TerminalV2
             OnClick = onClick;
         }
     }
+
+
 
 
 
