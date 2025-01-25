@@ -18,7 +18,6 @@ using AciertalaApp;
 
 
 
-
 namespace TerminalV2
 {
     public class Form1 : Form
@@ -69,8 +68,8 @@ namespace TerminalV2
                 // Ya está configurado, no mostrar el formulario y continuar con la inicialización
                 this.Show();
             }
-        }
 
+        }
 
 
         private void InstallAciertala(string downloadUrl, string zipPath, string extractedPath)
@@ -403,6 +402,7 @@ namespace TerminalV2
             {
                 buttonConfigs = new ButtonConfig[]
                 {
+                    new ButtonConfig("TERMINAL LOGIN", null, 130, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirTerminalLogin()),
                     new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
@@ -410,566 +410,1153 @@ namespace TerminalV2
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("TRANSMISION 3", "https://playviper.com/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("CHROME", "https://www.google.com/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("REGISTRO", "https://www.registro.com/", 130, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                    new ButtonConfig("REGISTRO QR", null, 130, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirRegistroQr()),
+                    new ButtonConfig("TIPOS DE APUESTAS", null, 130, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => AbrirTiposApuestas()),
                     new ButtonConfig("ACTUALIZAR", null, 130, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
                     new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("Apagar/Reiniciar", null, 130, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
 
                 // Cambiar la ubicación inicial para los botones en Full HD
-                startX = 1710; // Modificado para Full HD
+                startX = 1430; // Modificado para Full HD
                 startY = 80; // Modificado para Full HD
-
-                
 
                 // Crear el botón "Home" para la resolución 1920x1080
                 homeButton = new Button()
                 {
-                    Text = "Home",
-                    Width = 130,
-                    Height = 80,
-                    Left = 1710,
-                    Top = 0,
+                    Width = 135,
+                    Height = 64,
+                    Left = 1430,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 18, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 40, 40),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(0, 0, 0, 0)
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                // Agregar el botón al formulario o contenedor
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1680 && screenHeight == 1050) // 1680x1050
             {
                 buttonConfigs = new ButtonConfig[]
                 {
-                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("CHROME", "https://www.google.com/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("REGISTRO", "https://www.registro.com/", 275, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0),
-                new ButtonConfig("ACTUALIZAR", null, 275, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
-                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 3", "https://playviper.com/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CHROME", "https://www.google.com/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("REGISTRO", "https://www.registro.com/", 130, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("REGISTRO QR", null, 130, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirRegistroQr()),
+                new ButtonConfig("TIPOS DE APUESTAS", null, 130, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => AbrirTiposApuestas()),
+                new ButtonConfig("ACTUALIZAR", null, 130, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("Apagar/Reiniciar", null, 130, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
                 // Cambiar la ubicación inicial para los botones en Full HD
-                startX = 1320; // Modificado para Full HD
+                startX = 1190; // Modificado para Full HD
                 startY = 80; // Modificado para Full HD
 
-
-
-                // Crear el botón "Home" para la resolución 1920x1080
                 homeButton = new Button()
                 {
-                    Text = "Home",
-                    Width = 275,
-                    Height = 80,
-                    Left = 1320,
-                    Top = 0,
+                    Width = 135,
+                    Height = 64,
+                    Left = 1190,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(0, 0, 0, 0)
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                // Agregar el botón al formulario o contenedor
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1600 && screenHeight == 900) // 1600x900
             {
                 buttonConfigs = new ButtonConfig[]
                 {
-                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("CHROME", "https://www.google.com/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("REGISTRO", "https://www.registro.com/", 275, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0),
-                new ButtonConfig("ACTUALIZAR", null, 275, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
-                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 275, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 135, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 135, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 135, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 135, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 135, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 135, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 135, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 3", "https://playviper.com/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CHROME", "https://www.google.com/", 135, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("REGISTRO", "https://www.registro.com/", 135, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("REGISTRO QR", null, 135, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirRegistroQr()),
+                new ButtonConfig("TIPOS DE APUESTAS", null, 135, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => AbrirTiposApuestas()),
+                new ButtonConfig("ACTUALIZAR", null, 135, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 135, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("Apagar/Reiniciar", null, 130, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
-                startX = 1240; 
-                startY = 80; 
+                startX = 1105; 
+                startY = 80;
 
+                
                 homeButton = new Button()
                 {
-                    Text = "Home",
-                    Width = 275,
-                    Height = 80,
-                    Left = 1240,
-                    Top = 0,
+                    Width = 135,
+                    Height = 64,
+                    Left = 1105,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(60, 0, 60, 0)
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1440 && screenHeight == 900) // 1440x900
             {
                 buttonConfigs = new ButtonConfig[]
                 {
-                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("CHROME", "https://www.google.com/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("REGISTRO", "https://www.registro.com/", 200, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0),
-                new ButtonConfig("ACTUALIZAR", null, 200, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
-                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 3", "https://playviper.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CHROME", "https://www.google.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("REGISTRO", "https://www.registro.com/", 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("REGISTRO QR", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirRegistroQr()),
+                new ButtonConfig("TIPOS DE APUESTAS", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => AbrirTiposApuestas()),
+                new ButtonConfig("ACTUALIZAR", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("Apagar/Reiniciar", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
-                startX = 1160;
+                startX = 1020;
                 startY = 80;
 
                 homeButton = new Button()
                 {
-                    Text = "Home",
-                    Width = 200,
-                    Height = 80,
-                    Left = 1160,
-                    Top = 0,
+                    Width = 135,
+                    Height = 64,
+                    Left = 1020,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(30, 0, 30, 0)
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1400 && screenHeight == 1050)
             {
                 buttonConfigs = new ButtonConfig[]
                 {
-                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("CHROME", "https://www.google.com/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("REGISTRO", "https://www.registro.com/", 200, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0),
-                new ButtonConfig("ACTUALIZAR", null, 200, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
-                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 200, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 3", "https://playviper.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CHROME", "https://www.google.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("REGISTRO", "https://www.registro.com/", 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("REGISTRO QR", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirRegistroQr()),
+                new ButtonConfig("TIPOS DE APUESTAS", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => AbrirTiposApuestas()),
+                new ButtonConfig("ACTUALIZAR", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("Apagar/Reiniciar", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
-                startX = 1120;
+                startX = 980;
                 startY = 80;
 
                 homeButton = new Button()
                 {
-                    Text = "Home",
-                    Width = 200,
-                    Height = 80,
-                    Left = 1120,
-                    Top = 0,
+                    Width = 135,
+                    Height = 64,
+                    Left = 980,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(30, 0, 30, 0)
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1366 && screenHeight == 768)
             {
                 buttonConfigs = new ButtonConfig[]
                 {
-                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("CHROME", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("REGISTRO", "https://www.registro.com/", 200, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
-                new ButtonConfig("ACTUALIZAR", null, 200, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
-                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 3", "https://playviper.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CHROME", "https://www.google.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("REGISTRO", "https://www.registro.com/", 140, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("REGISTRO QR", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirRegistroQr()),
+                new ButtonConfig("TIPOS DE APUESTAS", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => AbrirTiposApuestas()),
+                new ButtonConfig("ACTUALIZAR", null, 140, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("Apagar/Reiniciar", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
 
-                startX = 1090;
+                startX = 945;
                 startY = 80;
 
                 homeButton = new Button()
                 {
-                    Text = "Home",
-                    Width = 200,
-                    Height = 80,
-                    Left = 1090,
-                    Top = 0,
+                    Width = 135,
+                    Height = 64,
+                    Left = 950,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(30, 0, 30, 0)
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1360 && screenHeight == 768)
             {
                 buttonConfigs = new ButtonConfig[]
                 {
-                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("CHROME", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("REGISTRO", "https://www.registro.com/", 200, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
-                new ButtonConfig("ACTUALIZAR", null, 200, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
-                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 3", "https://playviper.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CHROME", "https://www.google.com/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("REGISTRO", "https://www.registro.com/", 130, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("REGISTRO QR", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirRegistroQr()),
+                new ButtonConfig("TIPOS DE APUESTAS", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => AbrirTiposApuestas()),
+                new ButtonConfig("ACTUALIZAR", null, 130, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("Apagar/Reiniciar", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
-                startX = 1080;
+                startX = 950;
                 startY = 80;
 
                 homeButton = new Button()
                 {
-                    Text = "Home",
-                    Width = 200,
-                    Height = 80,
-                    Left = 1080,
-                    Top = 0,
+                    Width = 130,
+                    Height = 64,
+                    Left = 950,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(30, 0, 30, 0)
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1280 && screenHeight == 1024) 
             {
                 buttonConfigs = new ButtonConfig[]
                 {
-                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("CHROME", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("REGISTRO", "https://www.registro.com/", 200, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
-                new ButtonConfig("ACTUALIZAR", null, 200, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
-                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 3", "https://playviper.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CHROME", "https://www.google.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("REGISTRO", "https://www.registro.com/", 140, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("REGISTRO QR", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirRegistroQr()),
+                new ButtonConfig("TIPOS DE APUESTAS", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => AbrirTiposApuestas()),
+                new ButtonConfig("ACTUALIZAR", null, 140, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("Apagar/Reiniciar", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
-                startX = 1000;
+                startX = 860;
                 startY = 80;
 
                 homeButton = new Button()
                 {
-                    Text = "Home",
-                    Width = 200,
-                    Height = 80,
-                    Left = 1000,
-                    Top = 0,
+                    Width = 140,
+                    Height = 64,
+                    Left = 860,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(30, 0, 30, 0)
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1280 && screenHeight == 960)
             {
                 buttonConfigs = new ButtonConfig[]
                 {
-                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("CHROME", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("REGISTRO", "https://www.registro.com/", 200, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
-                new ButtonConfig("ACTUALIZAR", null, 200, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
-                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 3", "https://playviper.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CHROME", "https://www.google.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("REGISTRO", "https://www.registro.com/", 140, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("REGISTRO QR", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirRegistroQr()),
+                new ButtonConfig("TIPOS DE APUESTAS", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => AbrirTiposApuestas()),
+                new ButtonConfig("ACTUALIZAR", null, 140, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("Apagar/Reiniciar", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
-                startX = 1000;
+                startX = 860;
                 startY = 80;
 
                 homeButton = new Button()
                 {
-                    Text = "Home",
-                    Width = 200,
-                    Height = 80,
-                    Left = 1000,
-                    Top = 0,
+                    Width = 140,
+                    Height = 64,
+                    Left = 860,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(30, 0, 30, 0)
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1280 && screenHeight == 800)
             {
                 buttonConfigs = new ButtonConfig[]
                 {
-                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("CHROME", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("REGISTRO", "https://www.registro.com/", 200, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
-                new ButtonConfig("ACTUALIZAR", null, 200, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
-                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 3", "https://playviper.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CHROME", "https://www.google.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("REGISTRO", "https://www.registro.com/", 140, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("REGISTRO QR", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirRegistroQr()),
+                new ButtonConfig("TIPOS DE APUESTAS", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => AbrirTiposApuestas()),
+                new ButtonConfig("ACTUALIZAR", null, 140, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("Apagar/Reiniciar", null, 140, 40, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
-                startX = 1000;
+                startX = 860;
                 startY = 80;
 
                 homeButton = new Button()
                 {
-                    Text = "Home",
-                    Width = 200,
-                    Height = 80,
-                    Left = 1000,
-                    Top = 0,
+                    Width = 140,
+                    Height = 64,
+                    Left = 860,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(30, 0, 30, 0)
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1280 && screenHeight == 768)
             {
                 buttonConfigs = new ButtonConfig[]
                 {
-                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("CHROME", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("REGISTRO", "https://www.registro.com/", 200, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
-                new ButtonConfig("ACTUALIZAR", null, 200, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
-                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 3", "https://playviper.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CHROME", "https://www.google.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("REGISTRO", "https://www.registro.com/", 140, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("REGISTRO QR", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirRegistroQr()),
+                new ButtonConfig("TIPOS DE APUESTAS", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => AbrirTiposApuestas()),
+                new ButtonConfig("ACTUALIZAR", null, 140, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("Apagar/Reiniciar", null, 140, 40, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
-                startX = 1000;
+                startX = 860;
                 startY = 80;
 
                 homeButton = new Button()
                 {
-                    Text = "Home",
-                    Width = 200,
-                    Height = 80,
-                    Left = 1000,
-                    Top = 0,
+                    Width = 140,
+                    Height = 64,
+                    Left = 860,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(30, 0, 30, 0)
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1280 && screenHeight == 720) 
             {
                 buttonConfigs = new ButtonConfig[]
                 {
-                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("CHROME", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("REGISTRO", "https://www.registro.com/", 200, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
-                new ButtonConfig("ACTUALIZAR", null, 200, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
-                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 200, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 3", "https://playviper.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CHROME", "https://www.google.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("REGISTRO", "https://www.registro.com/", 140, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("REGISTRO QR", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirRegistroQr()),
+                new ButtonConfig("TIPOS DE APUESTAS", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => AbrirTiposApuestas()),
+                new ButtonConfig("ACTUALIZAR", null, 140, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("Apagar/Reiniciar", null, 140, 40, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
-                startX = 1000;
+                startX = 860;
                 startY = 80;
 
                 homeButton = new Button()
                 {
-                    Text = "Home",
-                    Width = 200,
-                    Height = 80,
-                    Left = 1000,
-                    Top = 0,
+                    Width = 140,
+                    Height = 64,
+                    Left = 860,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(30, 0, 30, 0)
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                this.Controls.Add(homeButton);
+            }
+            else if (screenWidth == 1280 && screenHeight == 600)
+            {
+                buttonConfigs = new ButtonConfig[]
+                {
+                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 3", "https://playviper.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CHROME", "https://www.google.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("REGISTRO", "https://www.registro.com/", 140, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("REGISTRO QR", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirRegistroQr()),
+                new ButtonConfig("TIPOS DE APUESTAS", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => AbrirTiposApuestas()),
+                new ButtonConfig("ACTUALIZAR", null, 140, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("Apagar/Reiniciar", null, 140, 40, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
+                };
+
+                startX = 860;
+                startY = 80;
+
+                homeButton = new Button()
+                {
+                    Width = 140,
+                    Height = 64,
+                    Left = 860,
+                    Top = 8,
+                    BackColor = ColorTranslator.FromHtml("#1A24B1"),
+                    FlatStyle = FlatStyle.Flat,
+                    ForeColor = Color.White,
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
+                };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1152 && screenHeight == 864)
             {
                 buttonConfigs = new ButtonConfig[]
                 {
-                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("CHROME", "https://www.google.com/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("REGISTRO", "https://www.registro.com/", 240, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
-                new ButtonConfig("ACTUALIZAR", null, 240, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
-                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                };
-
-                startX = 850;
-                startY = 80;
-
-                homeButton = new Button()
-                {
-                    Text = "Home",
-                    Width = 240,
-                    Height = 80,
-                    Left = 850,
-                    Top = 0,
-                    BackColor = ColorTranslator.FromHtml("#1A24B1"),
-                    FlatStyle = FlatStyle.Flat,
-                    ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(40, 0, 40, 0)
-                };
-            }
-            else if (screenWidth == 1024 && screenHeight == 768)
-            {
-                buttonConfigs = new ButtonConfig[]
-                {
-                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("CHROME", "https://www.google.com/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("REGISTRO", "https://www.registro.com/", 240, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
-                new ButtonConfig("ACTUALIZAR", null, 240, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
-                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 240, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 3", "https://playviper.com/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CHROME", "https://www.google.com/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("REGISTRO", "https://www.registro.com/", 130, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("REGISTRO QR", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirRegistroQr()),
+                new ButtonConfig("TIPOS DE APUESTAS", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => AbrirTiposApuestas()),
+                new ButtonConfig("ACTUALIZAR", null, 130, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("Apagar/Reiniciar", null, 130, 40, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
                 startX = 720;
@@ -977,69 +1564,241 @@ namespace TerminalV2
 
                 homeButton = new Button()
                 {
-                    Text = "Home",
-                    Width = 240,
-                    Height = 80,
+                    Width = 130,
+                    Height = 64,
                     Left = 720,
-                    Top = 0,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(40, 0, 40, 0)
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                this.Controls.Add(homeButton);
+            }
+            else if (screenWidth == 1024 && screenHeight == 768)
+            {
+                buttonConfigs = new ButtonConfig[]
+                {
+                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 3", "https://playviper.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CHROME", "https://www.google.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("REGISTRO", "https://www.registro.com/", 140, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("REGISTRO QR", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirRegistroQr()),
+                new ButtonConfig("TIPOS DE APUESTAS", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => AbrirTiposApuestas()),
+                new ButtonConfig("ACTUALIZAR", null, 140, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("Apagar/Reiniciar", null, 140, 40, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
+                };
+
+                startX = 725;
+                startY = 80;
+
+                homeButton = new Button()
+                {
+                    Width = 140,
+                    Height = 64,
+                    Left = 725,
+                    Top = 8,
+                    BackColor = ColorTranslator.FromHtml("#1A24B1"),
+                    FlatStyle = FlatStyle.Flat,
+                    ForeColor = Color.White,
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
+                };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 800 && screenHeight == 600)
             {
                 buttonConfigs = new ButtonConfig[]
                 {
-                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("CHROME", "https://www.google.com/", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
-                new ButtonConfig("REGISTRO", "https://www.registro.com/", 150, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
-                new ButtonConfig("ACTUALIZAR", null, 150, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
-                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 150, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ESTADISTICA", "https://statsinfo.co/stats/1/c/26/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 1", "https://365livesport.org/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 2", "https://playviper.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("TRANSMISION 3", "https://playviper.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("CHROME", "https://www.google.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("REGISTRO", "https://www.registro.com/", 140, 40, ColorTranslator.FromHtml("#1A24B1"), false, 0),
+                new ButtonConfig("REGISTRO QR", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirRegistroQr()),
+                new ButtonConfig("TIPOS DE APUESTAS", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => AbrirTiposApuestas()),
+                new ButtonConfig("ACTUALIZAR", null, 140, 40, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
+                new ButtonConfig("Apagar/Reiniciar", null, 140, 40, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
-                startX = 590;
+                startX = 600;
                 startY = 80;
 
                 homeButton = new Button()
                 {
-                    Text = "Home",
-                    Width = 150,
-                    Height = 80,
-                    Left = 590,
-                    Top = 0,
+                    Width = 140,
+                    Height = 64,
+                    Left = 600,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(20, 0, 20, 0)
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
-            }
 
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                this.Controls.Add(homeButton);
+            }
 
 
             // Añadir el evento de clic del botón "Home"
@@ -1049,7 +1808,7 @@ namespace TerminalV2
             buttonsPanel = new Panel()
             {
                 Width = screenWidth,  // Ajustamos al ancho de la pantalla
-                Height = screenHeight - 100,  // Ajustamos al alto de la pantalla (dejando espacio para el botón Home)
+                Height = screenHeight - 0,  // Ajustamos al alto de la pantalla (dejando espacio para el botón Home)
                 Left = 0,
                 Top = 0,
                 Visible = false,  // Inicialmente el panel estará oculto
@@ -1203,122 +1962,254 @@ namespace TerminalV2
             {
                 buttonConfigs = new ButtonConfig[]
                 {
-                    new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 160, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("ADMIN GOLDEN", "https://america-admin.virtustec.com/backoffice/login", 160, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 160, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 160, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("CHROME", "https://www.google.com/", 160, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("ACTUALIZAR", null, 160, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
-                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 160, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 135, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("ADMIN GOLDEN", "https://america-admin.virtustec.com/backoffice/login", 135, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 135, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 135, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("CHROME", "https://www.google.com/", 135, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("WHATSAPP", null, 135, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => AbrirWhatsappWeb()),
+                    new ButtonConfig("TAWK", null, 135, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => AbrirTawk()),
+                    new ButtonConfig("ACTUALIZAR", null, 135, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 135, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("UTILITARIOS", null, 135, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => AbrirUtilitarios()),
+                    new ButtonConfig("Apagar/Reiniciar", null, 135, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
                 // Cambiar la ubicación inicial para los botones en Full HD
-                startX = 1480; // Modificado para Full HD
+                startX = 1505; // Modificado para Full HD
                 startY = 80; // Modificado para Full HD
-
 
                 // Crear el botón "Home" para la resolución 1920x1080
                 homeButton = new Button()
                 {
-                    Text = "Home",
-                    Width = 160,
-                    Height = 80,
-                    Left = 1480,
-                    Top = 0,
+                    Width = 135,
+                    Height = 64,
+                    Left = 1505,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 18, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 40, 40),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(15, 0, 15, 0)
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                // Agregar el botón al formulario o contenedor
+                this.Controls.Add(homeButton);
+
             }
             else if (screenWidth == 1680 && screenHeight == 1050) 
             {
                 buttonConfigs = new ButtonConfig[]
                 {
-                    new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 250, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("ADMIN GOLDEN", "https://america-admin.virtustec.com/backoffice/login", 250, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 250, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 250, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("CHROME", "https://www.google.com/", 250, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("ACTUALIZAR", null, 250, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
-                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 250, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("ADMIN GOLDEN", "https://america-admin.virtustec.com/backoffice/login", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("CHROME", "https://www.google.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("ACTUALIZAR", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("UTILITARIOS", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => AbrirUtilitarios()),
+                    new ButtonConfig("Apagar/Reiniciar", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
                 // Cambiar la ubicación inicial para los botones en Full HD
-                startX = 1155; // Modificado para Full HD
+                startX = 1260; // Modificado para Full HD
                 startY = 80; // Modificado para Full HD
 
 
-
-                // Crear el botón "Home" para la resolución 1920x1080
                 homeButton = new Button()
                 {
-                    Text = "Home",
-                    Width = 250,
-                    Height = 80,
-                    Left = 1155,
-                    Top = 0,
+                    Width = 140,
+                    Height = 64,
+                    Left = 1260,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(50, 0, 50, 0)
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                // Agregar el botón al formulario o contenedor
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1600 && screenHeight == 900) // 1600x900
             {
                 buttonConfigs = new ButtonConfig[]
                 {
-                    new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 235, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("ADMIN GOLDEN", "https://america-admin.virtustec.com/backoffice/login", 235, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 235, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 235, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("CHROME", "https://www.google.com/", 235, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("ACTUALIZAR", null, 235, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
-                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 250, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("ADMIN GOLDEN", "https://america-admin.virtustec.com/backoffice/login", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("CHROME", "https://www.google.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("ACTUALIZAR", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("UTILITARIOS", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => AbrirUtilitarios()),
+                    new ButtonConfig("Apagar/Reiniciar", null, 140, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
-                startX = 1085;
+                startX = 1180;
                 startY = 80;
 
                 homeButton = new Button()
                 {
-                    Text = "Home",
-                    Width = 235,
-                    Height = 80,
-                    Left = 1085,
-                    Top = 0,
+                    Width = 140,
+                    Height = 64,
+                    Left = 1180,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(60, 0, 60, 0)
+                    Font = new Font("Arial", 18, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 25; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 15; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                // Agregar el botón al formulario o contenedor
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1440 && screenHeight == 900) // 1440x900
             {
@@ -1329,34 +2220,78 @@ namespace TerminalV2
                     new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 120, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 120, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("CHROME", "https://www.google.com/", 120, 50, ColorTranslator.FromHtml("#313439"), false, 0),
-                    new ButtonConfig("ACTUALIZAR", null, 235, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
-                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 250, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("ACTUALIZAR", null, 120, 50, ColorTranslator.FromHtml("#313439"), false, 0, null,(sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 120, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("UTILITARIOS", null, 120, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => AbrirUtilitarios()),
+                    new ButtonConfig("Apagar/Reiniciar", null, 120, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
-                startX = 1045;
+                startX = 1040;
                 startY = 80;
 
                 homeButton = new Button()
                 {
-                    //Text = "Home",
                     Width = 120,
-                    Height = 80,
-                    Left = 1045,
-                    Top = 0,
+                    Height = 64,
+                    Left = 1040,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 12, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(30, 0, 35, 0)
+                    Font = new Font("Arial", 15, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 20; // Tamaño del ícono
+                        int iconPadding = 5; // Espacio entre texto e ícono
+                        int textX = 10; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 20; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                // Agregar el botón al formulario o contenedor
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1400 && screenHeight == 1050) 
             {
@@ -1369,6 +2304,8 @@ namespace TerminalV2
                     new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
                     new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
                     new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
+                    new ButtonConfig("UTILITARIOS", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => AbrirUtilitarios()),
+                    new ButtonConfig("Apagar/Reiniciar", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
                 startX = 1010;
@@ -1376,37 +2313,81 @@ namespace TerminalV2
 
                 homeButton = new Button()
                 {
-                    //Text = "Home",
                     Width = 110,
-                    Height = 80,
+                    Height = 64,
                     Left = 1010,
-                    Top = 0,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(30, 0, 30, 0)
+                    Font = new Font("Arial", 15, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 20; // Tamaño del ícono
+                        int iconPadding = 0; // Espacio entre texto e ícono
+                        int textX = 5; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 15; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                // Agregar el botón al formulario o contenedor
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1366 && screenHeight == 768)
             {
                 buttonConfigs = new ButtonConfig[]
                 {
-                    new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CABALLOS.ico"),
-                    new ButtonConfig("ADMIN GOLDEN", "https://america-admin.virtustec.com/backoffice/login", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.ADMIN_GOLDEN.ico"),
-                    new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.SHEETS.ico"),
-                    new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.ACIERTALA WEB.ico"),
-                    new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
+                    new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("ADMIN GOLDEN", "https://america-admin.virtustec.com/backoffice/login", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0),
+                    new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                     new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
                     new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
+                    new ButtonConfig("UTILITARIOS", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => AbrirUtilitarios()),
+                    new ButtonConfig("Apagar/Reiniciar", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
 
@@ -1415,25 +2396,67 @@ namespace TerminalV2
 
                 homeButton = new Button()
                 {
-                    //Text = "Home",
                     Width = 110,
-                    Height = 80,
+                    Height = 64,
                     Left = 975,
-                    Top = 0,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(30, 0, 30, 0)
+                    Font = new Font("Arial", 15, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 20; // Tamaño del ícono
+                        int iconPadding = 0; // Espacio entre texto e ícono
+                        int textX = 5; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 15; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                // Agregar el botón al formulario o contenedor
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1360 && screenHeight == 768) 
             {
@@ -1446,6 +2469,8 @@ namespace TerminalV2
                     new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
                     new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
                     new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
+                    new ButtonConfig("UTILITARIOS", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => AbrirUtilitarios()),
+                    new ButtonConfig("Apagar/Reiniciar", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
                 startX = 970;
@@ -1453,25 +2478,67 @@ namespace TerminalV2
 
                 homeButton = new Button()
                 {
-                    //Text = "Home",
                     Width = 110,
-                    Height = 80,
+                    Height = 64,
                     Left = 970,
-                    Top = 0,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(30, 0, 30, 0)
+                    Font = new Font("Arial", 15, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 20; // Tamaño del ícono
+                        int iconPadding = 0; // Espacio entre texto e ícono
+                        int textX = 5; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 15; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                // Agregar el botón al formulario o contenedor
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1280 && screenHeight == 1024)
             {
@@ -1484,6 +2551,8 @@ namespace TerminalV2
                     new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
                     new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
                     new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
+                    new ButtonConfig("UTILITARIOS", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => AbrirUtilitarios()),
+                    new ButtonConfig("Apagar/Reiniciar", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
                 startX = 890;
@@ -1491,25 +2560,67 @@ namespace TerminalV2
 
                 homeButton = new Button()
                 {
-                    //Text = "Home",
                     Width = 110,
-                    Height = 80,
+                    Height = 64,
                     Left = 890,
-                    Top = 0,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(30, 0, 30, 0)
+                    Font = new Font("Arial", 15, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 20; // Tamaño del ícono
+                        int iconPadding = 0; // Espacio entre texto e ícono
+                        int textX = 5; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 15; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                // Agregar el botón al formulario o contenedor
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1280 && screenHeight == 960)
             {
@@ -1522,6 +2633,8 @@ namespace TerminalV2
                     new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
                     new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
                     new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
+                    new ButtonConfig("UTILITARIOS", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => AbrirUtilitarios()),
+                    new ButtonConfig("Apagar/Reiniciar", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
                 startX = 890;
@@ -1529,25 +2642,67 @@ namespace TerminalV2
 
                 homeButton = new Button()
                 {
-                    //Text = "Home",
                     Width = 110,
-                    Height = 80,
+                    Height = 64,
                     Left = 890,
-                    Top = 0,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(30, 0, 30, 0)
+                    Font = new Font("Arial", 15, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 20; // Tamaño del ícono
+                        int iconPadding = 0; // Espacio entre texto e ícono
+                        int textX = 5; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 15; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                // Agregar el botón al formulario o contenedor
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1280 && screenHeight == 800)
             {
@@ -1558,8 +2713,10 @@ namespace TerminalV2
                     new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 100, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.SHEETS.ico"),
                     new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 100, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.ACIERTALA WEB.ico"),
                     new ButtonConfig("CHROME", "https://www.google.com/", 100, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
-                    new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
-                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
+                    new ButtonConfig("ACTUALIZAR", null, 100, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 100, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
+                    new ButtonConfig("UTILITARIOS", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => AbrirUtilitarios()),
+                    new ButtonConfig("Apagar/Reiniciar", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
                 startX = 895;
@@ -1567,25 +2724,67 @@ namespace TerminalV2
 
                 homeButton = new Button()
                 {
-                    //Text = "Home",
-                    Width = 100,
-                    Height = 80,
+                    Width = 110,
+                    Height = 64,
                     Left = 895,
-                    Top = 0,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(30, 0, 25, 0)
+                    Font = new Font("Arial", 15, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 20; // Tamaño del ícono
+                        int iconPadding = 0; // Espacio entre texto e ícono
+                        int textX = 5; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 15; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                // Agregar el botón al formulario o contenedor
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1280 && screenHeight == 768)
             {
@@ -1598,6 +2797,8 @@ namespace TerminalV2
                     new ButtonConfig("CHROME", "https://www.google.com/", 100, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
                     new ButtonConfig("ACTUALIZAR", null, 100, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
                     new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 100, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
+                    new ButtonConfig("UTILITARIOS", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => AbrirUtilitarios()),
+                    new ButtonConfig("Apagar/Reiniciar", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
                 startX = 895;
@@ -1605,25 +2806,67 @@ namespace TerminalV2
 
                 homeButton = new Button()
                 {
-                    //Text = "Home",
-                    Width = 100,
-                    Height = 80,
+                    Width = 110,
+                    Height = 64,
                     Left = 895,
-                    Top = 0,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(30, 0, 25, 0)
+                    Font = new Font("Arial", 15, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 20; // Tamaño del ícono
+                        int iconPadding = 0; // Espacio entre texto e ícono
+                        int textX = 5; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 15; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                // Agregar el botón al formulario o contenedor
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1280 && screenHeight == 720)
             {
@@ -1636,6 +2879,8 @@ namespace TerminalV2
                     new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
                     new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
                     new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
+                    new ButtonConfig("UTILITARIOS", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => AbrirUtilitarios()),
+                    new ButtonConfig("Apagar/Reiniciar", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
                 startX = 890;
@@ -1643,25 +2888,149 @@ namespace TerminalV2
 
                 homeButton = new Button()
                 {
-                    //Text = "Home",
                     Width = 110,
-                    Height = 80,
+                    Height = 64,
                     Left = 890,
-                    Top = 0,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(30, 0, 30, 0)
+                    Font = new Font("Arial", 15, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 20; // Tamaño del ícono
+                        int iconPadding = 0; // Espacio entre texto e ícono
+                        int textX = 5; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 15; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                // Agregar el botón al formulario o contenedor
+                this.Controls.Add(homeButton);
+            }
+            else if (screenWidth == 1280 && screenHeight == 600)
+            {
+                buttonConfigs = new ButtonConfig[]
+                {
+                    new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CABALLOS.ico"),
+                    new ButtonConfig("ADMIN GOLDEN", "https://america-admin.virtustec.com/backoffice/login", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.ADMIN_GOLDEN.ico"),
+                    new ButtonConfig("SHEETS", "https://docs.google.com/spreadsheets/u/0/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.SHEETS.ico"),
+                    new ButtonConfig("ACIERTALA WEB", "https://www.pe.aciertala.com/sport", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.ACIERTALA WEB.ico"),
+                    new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
+                    new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
+                    new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
+                    new ButtonConfig("UTILITARIOS", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => AbrirUtilitarios()),
+                    new ButtonConfig("Apagar/Reiniciar", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
+                };
+
+                startX = 890;
+                startY = 80;
+
+                homeButton = new Button()
+                {
+                    Width = 110,
+                    Height = 64,
+                    Left = 890,
+                    Top = 8,
+                    BackColor = ColorTranslator.FromHtml("#1A24B1"),
+                    FlatStyle = FlatStyle.Flat,
+                    ForeColor = Color.White,
+                    Font = new Font("Arial", 15, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
+                };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 20; // Tamaño del ícono
+                        int iconPadding = 0; // Espacio entre texto e ícono
+                        int textX = 5; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 15; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                // Agregar el botón al formulario o contenedor
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1152 && screenHeight == 864)
             {
@@ -1674,32 +3043,76 @@ namespace TerminalV2
                     new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
                     new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
                     new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
+                    new ButtonConfig("UTILITARIOS", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => AbrirUtilitarios()),
+                    new ButtonConfig("Apagar/Reiniciar", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
-                startX = 860;
+                startX = 855;
                 startY = 80;
 
                 homeButton = new Button()
                 {
-                    //Text = "Home",
                     Width = 110,
-                    Height = 80,
-                    Left = 860,
-                    Top = 0,
+                    Height = 64,
+                    Left = 890,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(40, 0, 30, 0)
+                    Font = new Font("Arial", 15, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 20; // Tamaño del ícono
+                        int iconPadding = 0; // Espacio entre texto e ícono
+                        int textX = 5; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 15; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                // Agregar el botón al formulario o contenedor
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 1024 && screenHeight == 768)
             {
@@ -1712,6 +3125,8 @@ namespace TerminalV2
                     new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
                     new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
                     new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
+                    new ButtonConfig("UTILITARIOS", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => AbrirUtilitarios()),
+                    new ButtonConfig("Apagar/Reiniciar", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
                 startX = 730;
@@ -1719,25 +3134,67 @@ namespace TerminalV2
 
                 homeButton = new Button()
                 {
-                    //Text = "Home",
                     Width = 110,
-                    Height = 80,
+                    Height = 64,
                     Left = 730,
-                    Top = 0,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(40, 0, 30, 0)
+                    Font = new Font("Arial", 15, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 20; // Tamaño del ícono
+                        int iconPadding = 0; // Espacio entre texto e ícono
+                        int textX = 5; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 15; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                // Agregar el botón al formulario o contenedor
+                this.Controls.Add(homeButton);
             }
             else if (screenWidth == 800 && screenHeight == 600)
             {
@@ -1750,6 +3207,8 @@ namespace TerminalV2
                     new ButtonConfig("CHROME", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), true, 0, "AciertalaApp.CHROME.ico"),
                     new ButtonConfig("ACTUALIZAR", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.ACTUALIZAR.ico", (sender, args) => RestartAciertala()),
                     new ButtonConfig("CONEXION REMOTA", "https://www.google.com/", 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, "AciertalaApp.CONEXION_REMOTA.ico"),
+                    new ButtonConfig("UTILITARIOS", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => AbrirUtilitarios()),
+                    new ButtonConfig("Apagar/Reiniciar", null, 110, 50, ColorTranslator.FromHtml("#313439"), false, 0, null, (sender, args) => OpenApagarReiniciarForm()),
                 };
 
                 startX = 675;
@@ -1757,25 +3216,67 @@ namespace TerminalV2
 
                 homeButton = new Button()
                 {
-                    //Text = "Home",
                     Width = 110,
-                    Height = 80,
-                    Left = 675,
-                    Top = 0,
+                    Height = 64,
+                    Left = 730,
+                    Top = 8,
                     BackColor = ColorTranslator.FromHtml("#1A24B1"),
                     FlatStyle = FlatStyle.Flat,
                     ForeColor = Color.White,
-                    Font = new Font("Arial", 15, FontStyle.Regular),
-
-                    // Cargar el ícono usando la función LoadEmbeddedImage
-                    Image = LoadEmbeddedImage("AciertalaApp.mas.ico", 30, 30),  // Especifica el recurso y el tamaño deseado del ícono
-                    // Alinear la imagen al lado derecho del texto
-                    ImageAlign = ContentAlignment.MiddleRight,
-                    // Alinear el texto a la izquierda
-                    TextAlign = ContentAlignment.MiddleLeft,
-                    // Ajustar el espacio entre el texto y la imagen
-                    Padding = new Padding(20, 0, 30, 0)
+                    Font = new Font("Arial", 15, FontStyle.Regular), // Fuente principal para "Home"
+                    Text = "", // El texto será dibujado manualmente
                 };
+
+                // Asignar un evento para personalizar el dibujo del texto y el ícono
+                homeButton.Paint += (sender, e) =>
+                {
+                    Button btn = sender as Button;
+
+                    if (btn != null)
+                    {
+                        // Coordenadas para ajustar el texto "Home" y el ícono
+                        int iconSize = 20; // Tamaño del ícono
+                        int iconPadding = 0; // Espacio entre texto e ícono
+                        int textX = 5; // Posición inicial del texto
+                        int textY = (btn.Height / 2) - 15; // Centrar verticalmente el texto "Home"
+                        int iconX = btn.Width - iconSize - 15; // Posición del ícono (a la derecha)
+                        int iconY = (btn.Height / 2) - (iconSize / 2); // Centrar verticalmente el ícono
+
+                        // Dibujar el texto principal "Home"
+                        using (Font homeFont = new Font("Arial", 18, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "Home",
+                                homeFont,
+                                new SolidBrush(btn.ForeColor),
+                                textX,
+                                textY
+                            );
+                        }
+
+                        // Dibujar el ícono a la derecha del texto
+                        var icon = LoadEmbeddedImage("AciertalaApp.mas.ico", iconSize, iconSize);
+                        if (icon != null)
+                        {
+                            e.Graphics.DrawImage(icon, iconX, iconY, iconSize, iconSize);
+                        }
+
+                        // Dibujar el texto pequeño "V.1.0" en el pie del botón
+                        using (Font versionFont = new Font("Arial", 7, FontStyle.Regular))
+                        {
+                            e.Graphics.DrawString(
+                                "V.1.0",
+                                versionFont,
+                                new SolidBrush(btn.ForeColor),
+                                (btn.Width / 2) - 15, // Centrar horizontalmente "V.1.0"
+                                btn.Height - 15 // Posicionar al pie del botón
+                            );
+                        }
+                    }
+                };
+
+                // Agregar el botón al formulario o contenedor
+                this.Controls.Add(homeButton);
             }
 
             // Ahora inicializamos el panel como una variable de clase
@@ -1874,6 +3375,18 @@ namespace TerminalV2
                         buttonsPanel.Visible = false;  // Cerrar el panel al hacer clic en cualquier botón
                     };
                 }
+
+                else if (config.Label == "UTILITARIOS")
+                {
+                    // Configuración específica para el botón "UTILITARIOS"
+                    button.Click += (s, e) =>
+                    {
+                        AbrirUtilitarios(); // Llama a la función para abrir el formulario
+                        buttonsPanel.Visible = false; // Cerrar el panel de botones
+                    };
+                }
+
+
                 else if (config.Label == "CONEXION REMOTA")
                 {
                     // Configuración específica para el botón "CONEXION REMOTA"
@@ -1904,6 +3417,167 @@ namespace TerminalV2
                     };
                 }
 
+                else if (config.Label == "ADMIN GOLDEN")
+                {
+                    // Configuración específica para el botón "ADMIN GOLDEN"
+                    button.Click += (s, e) =>
+                    {
+                        // Verifica si el formulario AdminGolden ya está abierto
+                        var adminGoldenForm = Application.OpenForms["AdminGolden"];
+                        if (adminGoldenForm != null)
+                        {
+                            adminGoldenForm.Close(); // Cierra el formulario si ya está abierto
+                        }
+
+                        // Abre una nueva instancia del formulario AdminGolden
+                        var newAdminGoldenForm = new AdminGolden();
+                        newAdminGoldenForm.Show(); // Mostrar el formulario AdminGolden
+
+                        // Cerrar el panel de botones
+                        buttonsPanel.Visible = false;
+                    };
+                }
+
+                else if (config.Label == "SHEETS")
+                {
+                    // Configuración específica para el botón "SHEETS"
+                    button.Click += (s, e) =>
+                    {
+                        // Verifica si el formulario WebSheets ya está abierto
+                        var webSheetsForm = Application.OpenForms["WebSheets"];
+                        if (webSheetsForm != null)
+                        {
+                            webSheetsForm.Close(); // Cierra el formulario si ya está abierto
+                        }
+
+                        // Abre una nueva instancia del formulario WebSheets
+                        var newWebSheetsForm = new WebSheets();
+                        newWebSheetsForm.Show(); // Mostrar el formulario WebSheets
+
+                        // Cerrar el panel de botones
+                        buttonsPanel.Visible = false;
+                    };
+                }
+
+                else if (config.Label == "ACIERTALA WEB")
+                {
+                    // Configuración específica para el botón "ACIERTALA WEB"
+                    button.Click += (s, e) =>
+                    {
+                        // Verifica si el formulario AciertalaWeb ya está abierto
+                        var aciertalaWebForm = Application.OpenForms["AciertalaWeb"];
+                        if (aciertalaWebForm != null)
+                        {
+                            aciertalaWebForm.Close(); // Cierra el formulario si ya está abierto
+                        }
+
+                        // Abre una nueva instancia del formulario AciertalaWeb
+                        var newAciertalaWebForm = new AciertalaWeb();
+                        newAciertalaWebForm.Show(); // Mostrar el formulario AciertalaWeb
+
+                        // Cerrar el panel de botones
+                        buttonsPanel.Visible = false;
+                    };
+                }
+
+                else if (config.Label == "WHATSAPP")
+                {
+                    button.Click += (s, e) =>
+                    {
+                        try
+                        {
+                            var existingForm = Application.OpenForms["WhatsappWeb"];
+                            if (existingForm is WhatsappWeb)
+                            {
+                                existingForm.Close();
+                            }
+
+                            var newWhatsappWeb = new WhatsappWeb();
+                            newWhatsappWeb.Show();
+
+                            buttonsPanel.Visible = false;
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Error al abrir WhatsappWeb: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    };
+                }
+
+                else if (config.Label == "TAWK")
+                {
+                    button.Click += (s, e) =>
+                    {
+                        AbrirTawk(); // Llama al método que maneja la apertura del formulario
+                    };
+                }
+
+                else if (config.Label == "REGISTRO QR")
+                {
+                    button.Click += (s, e) =>
+                    {
+                        AbrirRegistroQr(); // Llama al método que maneja la apertura del formulario
+                    };
+                }
+
+                else if (config.Label == "TIPOS DE APUESTAS")
+                {
+                    button.Click += (s, e) =>
+                    {
+                        AbrirTiposApuestas(); // Llama al método que maneja la apertura del formulario
+                    };
+                }
+
+                else if (config.Label == "TERMINAL LOGIN")
+                {
+                    button.Click += (s, e) =>
+                    {
+                        AbrirTerminalLogin(); // Llama al método que maneja la apertura del formulario
+                    };
+                }
+
+
+                else if (config.Label == "CHROME")
+                {
+                    // Configuración específica para el botón "CHROME"
+                    button.Click += (s, e) =>
+                    {
+                        // Cerrar el formulario WebChrome si ya está abierto
+                        var webchromeForm = Application.OpenForms["WebChrome"]; // Verifica si el formulario ya está abierto
+                        if (webchromeForm != null)
+                        {
+                            webchromeForm.Close(); // Cierra el formulario si ya está abierto
+                        }
+
+                        // Abre una nueva instancia del formulario WebChrome
+                        var newWebChromeForm = new WebChrome();
+                        newWebChromeForm.Show(); // Mostrar el formulario WebChrome
+
+                        // Cerrar el panel de botones
+                        buttonsPanel.Visible = false;
+                    };
+                }
+
+                else if (config.Label == "TRANSMISION 1")
+                {
+                    // Configuración específica para el botón "TRANSMISION 2"
+                    button.Click += (s, e) =>
+                    {
+                        // Cerrar el formulario Transmision2 si está abierto
+                        var transmision1Form = Application.OpenForms["Transmision1"]; // Verifica si el formulario ya está abierto
+                        if (transmision1Form != null)
+                        {
+                            transmision1Form.Close(); // Cierra el formulario
+                        }
+
+                        // Abre una nueva instancia del formulario Transmision2
+                        OpenTransmision1Form();
+
+                        // Cerrar el panel de botones
+                        buttonsPanel.Visible = false;
+                    };
+                }
+
                 else if (config.Label == "TRANSMISION 2")
                 {
                     // Configuración específica para el botón "TRANSMISION 2"
@@ -1923,6 +3597,38 @@ namespace TerminalV2
                         buttonsPanel.Visible = false;
                     };
                 }
+
+                else if (config.Label == "TRANSMISION 3")
+                {
+                    // Configuración específica para el botón "TRANSMISION 3"
+                    button.Click += (s, e) =>
+                    {
+                        // Verifica si el formulario Transmision3 ya está abierto
+                        var transmision3Form = Application.OpenForms["Transmision3"];
+                        if (transmision3Form != null)
+                        {
+                            transmision3Form.Close(); // Cierra el formulario si ya está abierto
+                        }
+
+                        // Crear y abrir una nueva instancia del formulario Transmision3
+                        var newTransmision3Form = new Transmision3();
+                        newTransmision3Form.Show();
+
+                        // Cerrar el panel de botones
+                        buttonsPanel.Visible = false;
+                    };
+                }
+
+                else if (config.Label == "Apagar/Reiniciar")
+                {
+                    // Configuración específica para el botón "Apagar/Reiniciar"
+                    button.Click += (s, e) =>
+                    {
+                        OpenApagarReiniciarForm(); // Llama al método que abre el formulario ApagarReiniciar
+                        buttonsPanel.Visible = false; // Cierra el panel de botones
+                    };
+                }
+
 
                 else if (config.Label == "REGISTRO")
                 {
@@ -1954,6 +3660,169 @@ namespace TerminalV2
             }
         }
 
+        private void AbrirUtilitarios()
+        {
+            // Verificar si el formulario Utilitarios ya está abierto
+            var utilitariosForm = Application.OpenForms["Utilitarios"];
+            if (utilitariosForm == null)
+            {
+                // Si no está abierto, crear una nueva instancia y mostrarla
+                var nuevoUtilitarios = new Utilitarios();
+                nuevoUtilitarios.Show();
+            }
+            else
+            {
+                // Si ya está abierto, activarlo
+                utilitariosForm.Activate();
+            }
+        }
+
+
+        private void OpenApagarReiniciarForm()
+        {
+            // Verifica si el formulario ya está abierto
+            var apagarReiniciarForm = Application.OpenForms["ApagarReiniciar"];
+            if (apagarReiniciarForm != null)
+            {
+                apagarReiniciarForm.Close(); // Cierra el formulario si ya está abierto
+            }
+
+            // Abre una nueva instancia del formulario
+            var newApagarReiniciarForm = new ApagarReiniciar();
+            newApagarReiniciarForm.Show(); // Mostrar el formulario
+        }
+
+        private void AbrirWhatsappWeb()
+        {
+            var AbrirWhatsappWeb = Application.OpenForms["WhatsappWeb"];
+            if (AbrirWhatsappWeb == null)
+            {
+                AbrirWhatsappWeb.Close();
+            }
+        }
+
+        private void AbrirTawk()
+        {
+            try
+            {
+                // Verifica si ya hay un formulario "Tawk" abierto
+                var existingForm = Application.OpenForms["Tawk"];
+                if (existingForm != null)
+                {
+                    // Si ya está abierto, lo cerramos antes de abrir uno nuevo
+                    existingForm.Close();
+                }
+
+                // Crea una nueva instancia del formulario "Tawk" y lo muestra
+                var newTawk = new Tawk();
+                newTawk.Name = "Tawk"; // Asegúrate de que el nombre sea consistente
+                newTawk.Show();
+
+                // Si tienes un panel u otra lógica, ajusta la visibilidad según sea necesario
+                buttonsPanel.Visible = false;
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores
+                MessageBox.Show($"Error al abrir Tawk: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void AbrirRegistroQr()
+        {
+            try
+            {
+                // Verifica si ya hay un formulario "Tawk" abierto
+                var existingForm = Application.OpenForms["RegistroQr"];
+                if (existingForm != null)
+                {
+                    // Si ya está abierto, lo cerramos antes de abrir uno nuevo
+                    existingForm.Close();
+                }
+
+                // Crea una nueva instancia del formulario "Tawk" y lo muestra
+                var newRegistroQr = new RegistroQr();
+                newRegistroQr.Name = "RegistroQr"; // Asegúrate de que el nombre sea consistente
+                newRegistroQr.Show();
+
+                // Si tienes un panel u otra lógica, ajusta la visibilidad según sea necesario
+                buttonsPanel.Visible = false;
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores
+                MessageBox.Show($"Error al abrir Tawk: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void AbrirTiposApuestas()
+        {
+            try
+            {
+                // Verifica si ya hay un formulario "Tawk" abierto
+                var existingForm = Application.OpenForms["TiposApuestas"];
+                if (existingForm != null)
+                {
+                    // Si ya está abierto, lo cerramos antes de abrir uno nuevo
+                    existingForm.Close();
+                }
+
+                // Crea una nueva instancia del formulario "Tawk" y lo muestra
+                var newTiposApuestas = new TiposApuestas();
+                newTiposApuestas.Name = "TiposApuestas"; // Asegúrate de que el nombre sea consistente
+                newTiposApuestas.Show();
+
+                // Si tienes un panel u otra lógica, ajusta la visibilidad según sea necesario
+                buttonsPanel.Visible = false;
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores
+                MessageBox.Show($"Error al abrir Tawk: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void AbrirTerminalLogin()
+        {
+            try
+            {
+                // Verifica si ya hay un formulario "TerminalLogin" abierto
+                var existingForm = Application.OpenForms["TerminalLogin"];
+                if (existingForm != null)
+                {
+                    // Si ya está abierto, lo cerramos antes de abrir uno nuevo
+                    existingForm.Close();
+                }
+
+                // Crea una nueva instancia del formulario VB.NET "TerminalLogin" y lo muestra
+                var newTerminalLogin = new TerminalLogin(); // Clase VB.NET
+                newTerminalLogin.Name = "TerminalLogin";    // Nombre del formulario para futuras referencias
+                newTerminalLogin.Show();
+
+                // Ajustar lógica de visibilidad si es necesario
+                buttonsPanel.Visible = false;
+            }
+            catch (Exception ex)
+            {
+                // Manejo de errores
+                MessageBox.Show($"Error al abrir TerminalLogin: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+        private void OpenTransmision1Form()
+        {
+            try
+            {
+                // Crear y mostrar el formulario Transmision1
+                Transmision1 form = new Transmision1();
+                form.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al abrir el formulario Transmisión 2: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
 
         private void OpenTransmision2Form()
         {
@@ -1968,7 +3837,6 @@ namespace TerminalV2
                 MessageBox.Show($"Error al abrir el formulario Transmisión 2: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
 
 
         private void OpenRemoteConnection(string filePath)
@@ -1996,9 +3864,6 @@ namespace TerminalV2
 
 
 
-
-
-
         private Image LoadEmbeddedImage(string resourceName, int width, int height)
         {
             var assembly = Assembly.GetExecutingAssembly();
@@ -2009,7 +3874,7 @@ namespace TerminalV2
                     Image img = Image.FromStream(stream);
 
                     // Redimensionar la imagen al tamaño deseado
-                    return new Bitmap(img, new Size(40, 40)); 
+                    return new Bitmap(img, new Size(30, 30)); 
                 }
             }
             return null;
@@ -2022,7 +3887,7 @@ namespace TerminalV2
             using (Form prompt = new Form())
             {
                 prompt.Width = 450;
-                prompt.Height = 300; // Aumentar la altura para incluir el CheckBox
+                prompt.Height = 350; // Aumentar la altura para incluir el nuevo campo
                 prompt.Text = "Configurar URL";
                 prompt.StartPosition = FormStartPosition.CenterScreen;
                 prompt.FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -2048,12 +3913,31 @@ namespace TerminalV2
                     BorderStyle = BorderStyle.FixedSingle
                 };
 
+                // Campo adicional para el Link QR
+                Label qrLabel = new Label()
+                {
+                    Left = 20,
+                    Top = 100,
+                    Width = 400,
+                    Text = "Ingrese el Link QR:",
+                    Font = new Font("Arial", 10, FontStyle.Regular)
+                };
+
+                TextBox qrTextBox = new TextBox()
+                {
+                    Left = 20,
+                    Top = 130,
+                    Width = 400,
+                    Font = new Font("Arial", 10, FontStyle.Regular),
+                    BorderStyle = BorderStyle.FixedSingle
+                };
+
                 // CheckBox para habilitar/deshabilitar el botón Caballos
                 CheckBox chkCaballosEnabled = new CheckBox()
                 {
                     Text = "Mostrar botón Caballos",
                     Left = 20,
-                    Top = 100, // Colocar debajo del TextBox
+                    Top = 170, // Colocar debajo del TextBox QR
                     Checked = false, // Valor predeterminado
                     Width = 200
                 };
@@ -2063,7 +3947,7 @@ namespace TerminalV2
                 {
                     Text = "Modo Cajero",
                     Left = 20,
-                    Top = 130, // Colocar debajo de chkCaballosEnabled
+                    Top = 200, // Colocar debajo de chkCaballosEnabled
                     Checked = false, // Valor predeterminado
                     Width = 250
                 };
@@ -2073,7 +3957,7 @@ namespace TerminalV2
                     Text = "Aceptar",
                     Left = 260,
                     Width = 80,
-                    Top = 220, // Mover el botón de aceptación hacia abajo para que haya espacio
+                    Top = 260, // Mover el botón de aceptación hacia abajo para que haya espacio
                     DialogResult = DialogResult.OK,
                     BackColor = ColorTranslator.FromHtml("#4CAF50"),
                     ForeColor = Color.White,
@@ -2086,7 +3970,7 @@ namespace TerminalV2
                     Text = "Cancelar",
                     Left = 350,
                     Width = 80,
-                    Top = 220, // Mover el botón de cancelación hacia abajo
+                    Top = 260, // Mover el botón de cancelación hacia abajo
                     DialogResult = DialogResult.Cancel,
                     BackColor = ColorTranslator.FromHtml("#F44336"),
                     ForeColor = Color.White,
@@ -2096,6 +3980,8 @@ namespace TerminalV2
 
                 prompt.Controls.Add(textLabel);
                 prompt.Controls.Add(textBox);
+                prompt.Controls.Add(qrLabel); // Añadir el Label para el Link QR
+                prompt.Controls.Add(qrTextBox); // Añadir el TextBox para el Link QR
                 prompt.Controls.Add(chkCaballosEnabled); // Añadir el CheckBox
                 prompt.Controls.Add(chkDisableCaballos); // Añadir el nuevo CheckBox
                 prompt.Controls.Add(confirmation);
@@ -2114,19 +4000,31 @@ namespace TerminalV2
                 if (prompt.ShowDialog() == DialogResult.OK && !string.IsNullOrEmpty(textBox.Text))
                 {
                     string inputURL = textBox.Text;  // La URL ingresada por el usuario
+                    string qrURL = qrTextBox.Text;  // El Link QR ingresado por el usuario
 
-                    if (Uri.IsWellFormedUriString(inputURL, UriKind.Absolute))  // Verificar si la URL es válida
+                    if (Uri.IsWellFormedUriString(inputURL, UriKind.Absolute) && Uri.IsWellFormedUriString(qrURL, UriKind.Absolute))
                     {
                         registroURL = inputURL;  // Asignar la URL ingresada
                         bool caballosEnabled = chkCaballosEnabled.Checked;  // Guardar el estado del CheckBox
                         bool disableCaballos = chkDisableCaballos.Checked;  // Guardar el estado del nuevo CheckBox
-                        SaveRegistroURLToLocalStorage(caballosEnabled, disableCaballos);  // Guardar en LocalStorage
 
-                        MessageBox.Show("URL configurada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        // Guardar valores incluyendo el Link QR
+                        var data = new Dictionary<string, string>
+                {
+                    { "registroURL", Uri.EscapeDataString(registroURL) },  // Codificar la URL
+                    { "caballosEnabled", caballosEnabled.ToString() },
+                    { "disableCaballos", disableCaballos.ToString() },
+                    { "qrURL", Uri.EscapeDataString(qrURL) } // Añadir el Link QR codificado
+                };
 
-                        // Continuar con la inicialización según el valor de los CheckBox
+                        localStorage.Save(data);
+
+                        MessageBox.Show("Configuración guardada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        // Continuar con la lógica de inicialización según los CheckBox
                         if (disableCaballos)
                         {
+                            // Lógica específica para Modo Cajero
                             string vboxAppPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "VBOX.appref-ms");
                             if (File.Exists(vboxAppPath))
                             {
@@ -2141,6 +4039,7 @@ namespace TerminalV2
                         }
                         else if (caballosEnabled)
                         {
+                            // Lógica específica para habilitar Caballos
                             string downloadUrl = "https://releases.xpressgaming.net/tech.xpress.aciertala/win32/Aciertala-setup-2.7.2.zip";
                             string localPath = @"C:\Aciertala";
                             string zipPath = Path.Combine(localPath, "Aciertala-setup.zip");
@@ -2158,6 +4057,7 @@ namespace TerminalV2
                         }
                         else
                         {
+                            // Lógica general para instalación
                             string downloadUrl = "https://releases.xpressgaming.net/tech.xpress.aciertala/win32/Aciertala-setup-2.7.2.zip";
                             string localPath = @"C:\Aciertala";
                             string zipPath = Path.Combine(localPath, "Aciertala-setup.zip");
@@ -2178,17 +4078,15 @@ namespace TerminalV2
                     }
                     else
                     {
-                        MessageBox.Show("La URL ingresada no es válida. Inténtelo nuevamente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Alguna de las URLs ingresadas no es válida. Inténtelo nuevamente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
                 else
                 {
                     this.Show();  // Si el usuario canceló o no ingresó nada, solo mostramos la ventana principal
                 }
-
             }
         }
-
 
 
         private void OpenWebView(string url, Button button)
@@ -2251,8 +4149,6 @@ namespace TerminalV2
             OnClick = onClick;
         }
     }
-
-
 
 
 
@@ -2393,7 +4289,7 @@ namespace TerminalV2
             'jdiv.button__bEFyn[style*=""background: linear-gradient(95deg, rgb(211, 55, 55)""]',
             'div.share__text',
             '.sc-GKYbw.lkPYer', // Highlights elemento
-            '.sc-itMJkM.jkTSKs', // Nuevo elemento agregado
+            '.sc-itMJkM.jkTSKs', 
 
             
             // Elementos que deseas ocultar por su id

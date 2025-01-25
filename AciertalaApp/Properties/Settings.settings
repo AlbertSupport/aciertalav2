@@ -5,5 +5,14 @@
     <Setting Name="CaballosVisible" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="PaperSize" Type="System.String" Scope="User">
+      <Value Profile="(Default)">80mm</Value>
+    </Setting>
+    <Setting Name="LogoPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Logo/LogoAciertala.png</Value>
+    </Setting>
+    <Setting Name="PrinterName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>

@@ -15,7 +15,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>C:\Users\OPERACIONES-A\Desktop\Desarrollo Aciertala\</PublishUrl>
+    <PublishUrl>C:\Users\OPERACIONES-A\Desktop\Aciertala Prueba\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -28,8 +28,8 @@
     <WebPage>index.html</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>50</ApplicationRevision>
-    <ApplicationVersion>3.0.0.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>4.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -88,8 +88,8 @@
     <Reference Include="DeltaCompressionDotNet.PatchApi, Version=1.1.0.0, Culture=neutral, PublicKeyToken=3e8888ee913ed789, processorArchitecture=MSIL">
       <HintPath>..\packages\DeltaCompressionDotNet.1.1.0\lib\net20\DeltaCompressionDotNet.PatchApi.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.8.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.1\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.WebView2.Core, Version=1.0.2849.39, Culture=neutral, PublicKeyToken=2a8ab48044d2601e, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.WebView2.1.0.2849.39\lib\net462\Microsoft.Web.WebView2.Core.dll</HintPath>
@@ -115,6 +115,11 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="QRCoder, Version=1.6.0.0, Culture=neutral, PublicKeyToken=c4ed5b9ae8358a28, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.6.0\lib\net40\QRCoder.dll</HintPath>
+    </Reference>
     <Reference Include="SharpCompress, Version=0.38.0.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpCompress.0.38.0\lib\net462\SharpCompress.dll</HintPath>
     </Reference>
@@ -126,6 +131,9 @@
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Pipelines, Version=9.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Pipelines.9.0.1\lib\net462\System.IO.Pipelines.dll</HintPath>
+    </Reference>
     <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -139,8 +147,17 @@
     <Reference Include="System.Text.Encoding.CodePages, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encoding.CodePages.8.0.0\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
     </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=9.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.9.0.1\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=9.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.9.0.1\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -149,11 +166,36 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
     <Reference Include="ZstdSharp, Version=0.8.1.0, Culture=neutral, PublicKeyToken=8d151af33a4ad5cf, processorArchitecture=MSIL">
       <HintPath>..\packages\ZstdSharp.Port.0.8.1\lib\net462\ZstdSharp.dll</HintPath>
     </Reference>
+    <Reference Include="zxing, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.9\lib\net47\zxing.dll</HintPath>
+    </Reference>
+    <Reference Include="zxing.presentation, Version=0.16.9.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZXing.Net.0.16.9\lib\net47\zxing.presentation.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AciertalaWeb.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AciertalaWeb.Designer.cs">
+      <DependentUpon>AciertalaWeb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AdminGolden.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AdminGolden.Designer.cs">
+      <DependentUpon>AdminGolden.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ApagarReiniciar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ApagarReiniciar.Designer.cs">
+      <DependentUpon>ApagarReiniciar.cs</DependentUpon>
+    </Compile>
     <Compile Include="AppUpdater.cs" />
     <Compile Include="Caballos.cs">
       <SubType>Form</SubType>
@@ -161,11 +203,23 @@
     <Compile Include="Caballos.Designer.cs">
       <DependentUpon>Caballos.cs</DependentUpon>
     </Compile>
+    <Compile Include="CalculadoraAciertala.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CalculadoraAciertala.Designer.cs">
+      <DependentUpon>CalculadoraAciertala.cs</DependentUpon>
+    </Compile>
     <Compile Include="CustomUpdateDialog.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPrintSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPrintSettings.Designer.cs">
+      <DependentUpon>FormPrintSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="LocalStorage.cs" />
     <Compile Include="Program.cs" />
@@ -175,11 +229,72 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="RegistroQr.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RegistroQr.Designer.cs">
+      <DependentUpon>RegistroQr.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Settings.cs" />
+    <Compile Include="Tawk.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Tawk.Designer.cs">
+      <DependentUpon>Tawk.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TerminalLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TerminalLogin.Designer.cs">
+      <DependentUpon>TerminalLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TiposApuestas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TiposApuestas.Designer.cs">
+      <DependentUpon>TiposApuestas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Transmision1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Transmision1.Designer.cs">
+      <DependentUpon>Transmision1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Transmision2.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Transmision2.Designer.cs">
       <DependentUpon>Transmision2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Transmision3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Transmision3.Designer.cs">
+      <DependentUpon>Transmision3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utilitarios.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Utilitarios.Designer.cs">
+      <DependentUpon>Utilitarios.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WebChrome.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WebChrome.Designer.cs">
+      <DependentUpon>WebChrome.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WebSheets.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WebSheets.Designer.cs">
+      <DependentUpon>WebSheets.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WhatsappWeb.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WhatsappWeb.Designer.cs">
+      <DependentUpon>WhatsappWeb.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -196,7 +311,13 @@
     <EmbeddedResource Include="AciertalaICO %281%29.ico" />
     <EmbeddedResource Include="CHROME.ico" />
     <EmbeddedResource Include="ESTADISTICA.ico" />
+    <EmbeddedResource Include="Tawk.resx">
+      <DependentUpon>Tawk.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TRANSMISION.ico" />
+    <EmbeddedResource Include="Utilitarios.resx">
+      <DependentUpon>Utilitarios.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -232,6 +353,14 @@
   <ItemGroup>
     <EmbeddedResource Include="mas.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Form1.Designer.vb" />
+    <Content Include="Form1.vb">
+      <SubType>Form</SubType>
+    </Content>
+    <Content Include="Logo\LogoAciertala.png" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Web.WebView2.1.0.2849.39\build\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.2849.39\build\Microsoft.Web.WebView2.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

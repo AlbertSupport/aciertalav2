@@ -31,5 +31,41 @@ namespace AciertalaApp.Properties {
                 return ((bool)(this["CaballosVisible"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("80mm")]
+        public string PaperSize {
+            get {
+                return ((string)(this["PaperSize"]));
+            }
+            set {
+                this["PaperSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Logo/LogoAciertala.png")]
+        public string LogoPath {
+            get {
+                return ((string)(this["LogoPath"]));
+            }
+            set {
+                this["LogoPath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PrinterName {
+            get {
+                return ((string)(this["PrinterName"]));
+            }
+            set {
+                this["PrinterName"] = value;
+            }
+        }
     }
 }

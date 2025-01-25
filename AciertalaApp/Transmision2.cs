@@ -10,7 +10,7 @@ using Microsoft.Web.WebView2.WinForms;
 
 public partial class Transmision2 : Form
 {
-    private bool isFullScreen = false; // Variable para controlar el estado de pantalla completa
+    private bool isFullScreen = false;
 
     public Transmision2()
     {
@@ -21,17 +21,61 @@ public partial class Transmision2 : Form
     {
         try
         {
-            // Asegúrate de que WebView2 esté inicializado
+
+            browser.Visible = false;
+
+
             await browser.EnsureCoreWebView2Async(null);
 
-            // Configuración del WebView2
-            browser.CoreWebView2.NavigationCompleted += OnNavigationCompleted;
 
-            // Configurar comportamientos específicos
             ConfigureWebView2PopupBlocking();
             ConfigureWebView2RequestBlocking();
 
-            // Navegar a la URL especificada
+
+            browser.CoreWebView2.NavigationStarting += (s, args) =>
+            {
+
+                string preScript = @"
+                (function() {
+                    var style = document.createElement('style');
+                    style.type = 'text/css';
+                    style.innerHTML = `
+                        .portada-principal, header, footer, #btnIframe, #boton_full_screen {
+                            display: none !important;
+                        }
+                    `;
+                    document.head.appendChild(style);
+                })();
+                ";
+                browser.CoreWebView2.AddScriptToExecuteOnDocumentCreatedAsync(preScript);
+            };
+
+
+            browser.CoreWebView2.DOMContentLoaded += (s, args) =>
+            {
+
+                string postScript = @"
+                (function() {
+                    var observer = new MutationObserver(function(mutations) {
+                        mutations.forEach(function(mutation) {
+                            var elements = document.querySelectorAll('.portada-principal, header, footer, #btnIframe, #boton_full_screen');
+                            elements.forEach(function(el) {
+                                el.style.display = 'none';
+                            });
+                        });
+                    });
+
+                    observer.observe(document.body, { childList: true, subtree: true });
+                })();
+                ";
+                browser.CoreWebView2.ExecuteScriptAsync(postScript);
+            };
+
+
+
+            browser.CoreWebView2.NavigationCompleted += OnNavigationCompleted;
+
+
             string url = "https://playviper.com/";
             if (!string.IsNullOrEmpty(url) && Uri.IsWellFormedUriString(url, UriKind.Absolute))
             {
@@ -42,14 +86,14 @@ public partial class Transmision2 : Form
                 MessageBox.Show("URL no válida o vacía.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            // Ajustar la posición del botón "Actualizar" de manera automática
+
             int screenWidth = Screen.PrimaryScreen.Bounds.Width;
             int refreshButtonWidth = refreshButton.Width;
             int margin = 20;
             int refreshButtonX = screenWidth - refreshButtonWidth - margin;
             refreshButton.Location = new Point(refreshButtonX, 10);
 
-            // Estilo para los botones
+
             backButton.BackColor = Color.FromArgb(0, 123, 255);
             backButton.ForeColor = Color.White;
             backButton.FlatStyle = FlatStyle.Flat;
@@ -64,14 +108,14 @@ public partial class Transmision2 : Form
             refreshButton.Font = new Font("Arial", 10, FontStyle.Bold);
             refreshButton.Cursor = Cursors.Hand;
 
-            fullscreenButton.BackColor = Color.FromArgb(0, 123, 255);  // Estilo similar al de "Atrás"
+            fullscreenButton.BackColor = Color.FromArgb(0, 123, 255);
             fullscreenButton.ForeColor = Color.White;
             fullscreenButton.FlatStyle = FlatStyle.Flat;
             fullscreenButton.FlatAppearance.BorderSize = 0;
             fullscreenButton.Font = new Font("Arial", 10, FontStyle.Bold);
             fullscreenButton.Cursor = Cursors.Hand;
 
-            // Configuración de los efectos visuales cuando el cursor pasa sobre los botones
+
             refreshButton.MouseEnter += (s, eventArgs) =>
             {
                 refreshButton.BackColor = Color.FromArgb(32, 134, 45);
@@ -99,7 +143,7 @@ public partial class Transmision2 : Form
                 fullscreenButton.BackColor = Color.FromArgb(0, 123, 255);
             };
 
-            // Aseguramos que los botones estén visibles al inicio
+
             backButton.Visible = true;
             refreshButton.Visible = true;
             fullscreenButton.Visible = true;
@@ -110,31 +154,29 @@ public partial class Transmision2 : Form
         }
     }
 
+
     protected override void OnLoad(EventArgs e)
     {
         base.OnLoad(e);
-
         var currentScreen = Screen.FromPoint(Cursor.Position);
         int screenWidth = currentScreen.Bounds.Width;
         int fixedHeight = 1000;
-
         this.ClientSize = new Size(screenWidth, fixedHeight);
         this.Location = new Point(currentScreen.Bounds.X, currentScreen.Bounds.Y + 80);
     }
+
 
     private void OnNavigationCompleted(object sender, CoreWebView2NavigationCompletedEventArgs e)
     {
         try
         {
-            // Script para eliminar los elementos de inmediato
+
             string scriptToRemoveSection = @"
             var elements = document.querySelectorAll('.portada-principal, header, footer, #btnIframe, #boton_full_screen');
             elements.forEach(function(el) {
                 el.remove();
             });
-        ";
-
-            // Ejecutar el script de inmediato para eliminar los elementos
+            ";
             browser.CoreWebView2.ExecuteScriptAsync(scriptToRemoveSection);
         }
         catch (Exception ex)
@@ -142,13 +184,13 @@ public partial class Transmision2 : Form
             Console.WriteLine($"Error al inyectar script: {ex.Message}");
         }
 
-        // Ejecutar otros scripts que no dependen de la carga de elementos
+
         InjectScriptToHideAds();
         InjectCustomScript();
+
+
+        browser.Visible = true;
     }
-
-
-
 
 
 
@@ -168,12 +210,11 @@ public partial class Transmision2 : Form
                 if (button) {
                     button.style.display = 'none';
                 }
-                var button = document.getElementById('boton_full_screen');
-                if (button) {
-                    button.style.display = 'none';
+                var button2 = document.getElementById('boton_full_screen');
+                if (button2) {
+                    button2.style.display = 'none';
                 }
             ";
-
             browser.CoreWebView2.ExecuteScriptAsync(scriptToHideSection);
         }
         catch (Exception ex)
@@ -192,7 +233,6 @@ public partial class Transmision2 : Form
                     ad.style.display = 'none';
                 });
             ";
-
             browser.CoreWebView2.ExecuteScriptAsync(scriptToHideAds);
         }
         catch (Exception ex)
@@ -201,39 +241,150 @@ public partial class Transmision2 : Form
         }
     }
 
+    //Ahora dejo esto porsiacaso la cago ABAJO XDDD
+    //private void InjectCustomScript()
+    //{
+    //    try
+    //    {
+    //        string script = @"
+    //    (function() {
+    //        function removeAdsAndSpecificGrids() {
+    //            document.body.classList.remove('blur');
+    //            document.body.style.filter = 'none';
+
+    //            // Eliminar iframes que cumplen ciertas condiciones
+    //            document.querySelectorAll('iframe').forEach(iframe => {
+    //                const style = window.getComputedStyle(iframe);
+    //                if (
+    //                    !iframe.src ||
+    //                    iframe.src.includes('about:blank') ||
+    //                    style.opacity === '0' ||
+    //                    style.display === 'none' ||
+    //                    iframe.offsetWidth <= 1 ||
+    //                    iframe.offsetHeight <= 1
+    //                ) {
+    //                    iframe.remove();
+    //                }
+    //            });
+
+
+
+    //            // Eliminar elementos con altas z-index o texto no deseado
+    //            document.querySelectorAll('*').forEach(el => {
+    //                const styles = window.getComputedStyle(el);
+    //                if (
+    //                    parseInt(styles.zIndex) > 1000 ||
+    //                    styles.position === 'fixed' ||
+    //                    el.innerText?.includes('Giros de Suerte') ||
+    //                    el.innerText?.includes('meridiancasino')
+    //                ) {
+    //                    el.remove();
+    //                }
+    //            });
+
+    //            // Ocultar grids específicos con imágenes definidas
+    //            document.querySelectorAll('.grid').forEach(grid => {
+    //                const img = grid.querySelector('img');
+    //                if (img) {
+    //                    const src = img.src;
+    //                    const validImages = [
+    //                        'https://cuevana3hd.world/img/dsports_2%20(1).webp',
+    //                        'https://cuevana3hd.world/img/gol_peru.webp',
+    //                        'https://cuevana3hd.world/img/dsports_plus.webp',
+    //                        'https://cuevana3hd.world/img/fox_sports_3.webp',
+    //                        'https://cuevana3hd.world/img/espn_extra.webp',
+    //                        'https://cuevana3hd.world/img/espn_premium.webp',
+    //                        'https://i0.wp.com/www.zapping-tv.com/wp-content/uploads/2013/10/Sport-tv-1.jpg?fit=300%2C300&ssl=1'
+    //                    ];
+
+    //                    if (validImages.includes(src)) {
+    //                        grid.style.display = 'none';
+    //                    }
+    //                }
+    //            });
+
+    //            // Ocultar elementos con la clase específica
+    //            document.querySelectorAll('.item_video').forEach(function(el) {
+    //                el.style.display = 'none';
+    //            });
+    //        }
+
+    //        const observer = new MutationObserver((mutations) => {
+    //            removeAdsAndSpecificGrids();
+    //        });
+
+    //        observer.observe(document.documentElement, {
+    //            childList: true,
+    //            subtree: true,
+    //            attributes: true
+    //        });
+
+    //        removeAdsAndSpecificGrids();
+    //    })();
+    //    ";
+    //        browser.CoreWebView2.ExecuteScriptAsync(script);
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        Console.WriteLine($"Error al inyectar script personalizado: {ex.Message}");
+    //    }
+    //}
+
+
+
     private void InjectCustomScript()
     {
         try
         {
             string script = @"
-        (function() {
-            function removeAds() {
-                document.body.classList.remove('blur');
-                document.body.style.filter = 'none';
+            (function() {
+                function removeAds() {
+                    document.body.classList.remove('blur');
+                    document.body.style.filter = 'none';
 
-                document.querySelectorAll('iframe').forEach(iframe => {
-                    const style = window.getComputedStyle(iframe);
-                    if (
-                        !iframe.src ||
-                        iframe.src.includes('about:blank') ||
-                        style.opacity === '0' ||
-                        style.display === 'none' ||
-                        iframe.offsetWidth <= 1 ||
-                        iframe.offsetHeight <= 1
-                    ) {
-                        iframe.remove();
-                    }
-                });
+                    document.querySelectorAll('iframe').forEach(iframe => {
+                        const style = window.getComputedStyle(iframe);
+                        if (
+                            !iframe.src ||
+                            iframe.src.includes('about:blank') ||
+                            style.opacity === '0' ||
+                            style.display === 'none' ||
+                            iframe.offsetWidth <= 1 ||
+                            iframe.offsetHeight <= 1
+                        ) {
+                            iframe.remove();
+                        }
+                    });
 
-                document.querySelectorAll('*').forEach(el => {
-                    const styles = window.getComputedStyle(el);
-                    if (
-                        parseInt(styles.zIndex) > 1000 ||
-                        styles.position === 'fixed' ||
-                        el.innerText?.includes('Giros de Suerte') ||
-                        el.innerText?.includes('meridiancasino')
-                    ) {
-                        el.remove();
+                    document.querySelectorAll('*').forEach(el => {
+                        const styles = window.getComputedStyle(el);
+                        if (
+                            parseInt(styles.zIndex) > 1000 ||
+                            styles.position === 'fixed' ||
+                            el.innerText?.includes('Giros de Suerte') ||
+                            el.innerText?.includes('meridiancasino')
+                        ) {
+                            el.remove();
+                        }
+                    });
+
+                     document.querySelectorAll('.grid').forEach(grid => {
+    const img = grid.querySelector('img');
+                    if (img) {
+                        const src = img.src;
+    const validImages = [
+        'https://cuevana3hd.world/img/dsports_2%20(1).webp',
+                            'https://cuevana3hd.world/img/gol_peru.webp',
+                            'https://cuevana3hd.world/img/dsports_plus.webp',
+                            'https://cuevana3hd.world/img/fox_sports_3.webp',
+                            'https://cuevana3hd.world/img/espn_extra.webp',
+                            'https://cuevana3hd.world/img/espn_premium.webp',
+                            'https://i0.wp.com/www.zapping-tv.com/wp-content/uploads/2013/10/Sport-tv-1.jpg?fit=300%2C300&ssl=1'
+    ];
+
+                        if (validImages.includes(src)) {
+                            grid.style.display = 'none';
+                        }
                     }
                 });
 
@@ -292,7 +443,6 @@ public partial class Transmision2 : Form
             removeAds();
         })();
         ";
-
             browser.CoreWebView2.ExecuteScriptAsync(script);
         }
         catch (Exception ex)
@@ -390,7 +540,6 @@ public partial class Transmision2 : Form
 
     private void BackButton_Click(object sender, EventArgs e)
     {
-        // Función para ir hacia atrás en el navegador
         if (browser.CoreWebView2.CanGoBack)
         {
             browser.CoreWebView2.GoBack();
@@ -403,7 +552,6 @@ public partial class Transmision2 : Form
 
     private void RefreshButton_Click(object sender, EventArgs e)
     {
-        // Función para recargar la página
         browser.CoreWebView2.Reload();
     }
 
@@ -411,10 +559,10 @@ public partial class Transmision2 : Form
     {
         try
         {
-            // Cambiar el estado de pantalla completa
+
             isFullScreen = !isFullScreen;
 
-            // Si estamos en pantalla completa, ocultamos los botones de Atrás y Actualizar
+
             if (isFullScreen)
             {
                 backButton.Visible = false;
@@ -426,7 +574,7 @@ public partial class Transmision2 : Form
                 refreshButton.Visible = true;
             }
 
-            // Ejecutamos el script para poner el video en pantalla completa
+
             string script = "window.toggleFullScreenForAnyVideo();";
             browser.CoreWebView2.ExecuteScriptAsync(script);
         }
