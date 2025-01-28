@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 
 partial class RegistroQr : Form
 {
@@ -49,6 +50,8 @@ partial class RegistroQr : Form
 
         // Manejo de cierre con Escape
         this.KeyDown += Tawk_KeyDown;
+
+        this.Deactivate += new EventHandler(this.RegistroQr_Deactivate);
     }
 
     private void Tawk_KeyDown(object sender, KeyEventArgs e)

@@ -77,8 +77,13 @@ using System;
         this.Name = "Transmision3";
         this.Text = "Transmision3";
         this.Load += new EventHandler(this.Transmision3_Load);
+
+        // Asociar el evento Deactivate
+        this.Deactivate += new EventHandler(this.Transmision3_Deactivate);
+
         ((System.ComponentModel.ISupportInitialize)(this.browser)).EndInit();
         this.ResumeLayout(false);
     }
+
 
 }

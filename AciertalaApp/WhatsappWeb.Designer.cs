@@ -1,4 +1,6 @@
-﻿partial class WhatsappWeb
+﻿using System;
+
+partial class WhatsappWeb
 {
     private Microsoft.Web.WebView2.WinForms.WebView2 browser;
 
@@ -38,5 +40,7 @@
         this.Load += new System.EventHandler(this.WhatsappWeb_Load);
         ((System.ComponentModel.ISupportInitialize)(this.browser)).EndInit();
         this.ResumeLayout(false);
+
+        this.Deactivate += new EventHandler(this.WhatsappWeb_Deactivate);
     }
 }

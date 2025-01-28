@@ -44,5 +44,11 @@ using Microsoft.Web.WebView2.Core;
             }
         }
 
+        private void Tawk_Deactivate(object sender, EventArgs e)
+        {
+            this.Close(); // Cierra el formulario al quedar en segundo plano
+        }
 
-    }
+
+
+}

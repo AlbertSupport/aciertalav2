@@ -1,4 +1,6 @@
-﻿partial class TerminalLogin
+﻿using System;
+
+partial class TerminalLogin
 {
     /// <summary>
     /// Variable del diseñador necesaria.
@@ -54,6 +56,8 @@
         this.Text = "TerminalLogin";
         this.Load += new System.EventHandler(this.TerminalLogin_Load);
         this.ResumeLayout(false);
+
+        //this.Deactivate += new EventHandler(this.TerminalLogin_Deactivate);
     }
 
     #endregion

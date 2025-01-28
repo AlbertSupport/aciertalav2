@@ -112,5 +112,10 @@ public partial class TiposApuestas : Form
         }
     }
 
+    private void Tiposapuesta_Deactivate(object sender, EventArgs e)
+    {
+        this.Close(); // Cierra el formulario al quedar en segundo plano
+    }
+
 
 }

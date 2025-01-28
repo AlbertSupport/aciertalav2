@@ -1,4 +1,6 @@
-﻿partial class WebChrome
+﻿using System;
+
+partial class WebChrome
 {
     private Microsoft.Web.WebView2.WinForms.WebView2 browser;
     private System.Windows.Forms.Button btnBack;
@@ -94,6 +96,8 @@
         this.Load += new System.EventHandler(this.WebChrome_Load);
         ((System.ComponentModel.ISupportInitialize)(this.browser)).EndInit();
         this.ResumeLayout(false);
+
+        this.Deactivate += new EventHandler(this.WebChrome_Deactivate);
     }
 
 

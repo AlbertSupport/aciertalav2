@@ -494,6 +494,7 @@ namespace TerminalV2
             {
                 buttonConfigs = new ButtonConfig[]
                 {
+                new ButtonConfig("TERMINAL LOGIN", null, 130, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirTerminalLogin()),
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 130, 50, ColorTranslator.FromHtml("#313439"), false, 0),
@@ -583,6 +584,7 @@ namespace TerminalV2
             {
                 buttonConfigs = new ButtonConfig[]
                 {
+                new ButtonConfig("TERMINAL LOGIN", null, 135, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirTerminalLogin()),
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 135, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 135, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 135, 50, ColorTranslator.FromHtml("#313439"), false, 0),
@@ -671,6 +673,7 @@ namespace TerminalV2
             {
                 buttonConfigs = new ButtonConfig[]
                 {
+                new ButtonConfig("TERMINAL LOGIN", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirTerminalLogin()),
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
@@ -758,6 +761,7 @@ namespace TerminalV2
             {
                 buttonConfigs = new ButtonConfig[]
                 {
+                new ButtonConfig("TERMINAL LOGIN", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirTerminalLogin()),
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 50, ColorTranslator.FromHtml("#313439"), false, 0),
@@ -845,6 +849,7 @@ namespace TerminalV2
             {
                 buttonConfigs = new ButtonConfig[]
                 {
+                new ButtonConfig("TERMINAL LOGIN", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirTerminalLogin()),
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
@@ -933,6 +938,7 @@ namespace TerminalV2
             {
                 buttonConfigs = new ButtonConfig[]
                 {
+                new ButtonConfig("TERMINAL LOGIN", null, 130, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirTerminalLogin()),
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
@@ -1020,6 +1026,7 @@ namespace TerminalV2
             {
                 buttonConfigs = new ButtonConfig[]
                 {
+                new ButtonConfig("TERMINAL LOGIN", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirTerminalLogin()),
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
@@ -1107,6 +1114,7 @@ namespace TerminalV2
             {
                 buttonConfigs = new ButtonConfig[]
                 {
+                new ButtonConfig("TERMINAL LOGIN", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirTerminalLogin()),
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
@@ -1194,6 +1202,7 @@ namespace TerminalV2
             {
                 buttonConfigs = new ButtonConfig[]
                 {
+                new ButtonConfig("TERMINAL LOGIN", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirTerminalLogin()),
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
@@ -1281,6 +1290,7 @@ namespace TerminalV2
             {
                 buttonConfigs = new ButtonConfig[]
                 {
+                new ButtonConfig("TERMINAL LOGIN", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirTerminalLogin()),
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
@@ -1368,6 +1378,7 @@ namespace TerminalV2
             {
                 buttonConfigs = new ButtonConfig[]
                 {
+                new ButtonConfig("TERMINAL LOGIN", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirTerminalLogin()),
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
@@ -1455,6 +1466,7 @@ namespace TerminalV2
             {
                 buttonConfigs = new ButtonConfig[]
                 {
+                new ButtonConfig("TERMINAL LOGIN", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirTerminalLogin()),
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
@@ -1542,6 +1554,7 @@ namespace TerminalV2
             {
                 buttonConfigs = new ButtonConfig[]
                 {
+                new ButtonConfig("TERMINAL LOGIN", null, 130, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirTerminalLogin()),
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 130, 40, ColorTranslator.FromHtml("#313439"), false, 0),
@@ -1629,6 +1642,7 @@ namespace TerminalV2
             {
                 buttonConfigs = new ButtonConfig[]
                 {
+                new ButtonConfig("TERMINAL LOGIN", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirTerminalLogin()),
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
@@ -1716,6 +1730,7 @@ namespace TerminalV2
             {
                 buttonConfigs = new ButtonConfig[]
                 {
+                new ButtonConfig("TERMINAL LOGIN", null, 140, 50, ColorTranslator.FromHtml("#1A24B1"), false, 0, null,(sender, args) => AbrirTerminalLogin()),
                 new ButtonConfig("CABALLOS", "https://retailhorse.aciertala.com/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("RESULTADO EN VIVO", "https://statsinfo.co/live/1/", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),
                 new ButtonConfig("MARCADORES EN VIVO", "https://statshub.sportradar.com/novusoft/es/sport/1", 140, 40, ColorTranslator.FromHtml("#313439"), false, 0),

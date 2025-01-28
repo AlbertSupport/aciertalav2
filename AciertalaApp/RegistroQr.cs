@@ -87,4 +87,10 @@ public partial class RegistroQr : Form
 
         return string.Empty;
     }
+
+    private void RegistroQr_Deactivate(object sender, EventArgs e)
+    {
+        this.Close(); // Cierra el formulario al quedar en segundo plano
+    }
+
 }

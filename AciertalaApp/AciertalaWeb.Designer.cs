@@ -1,4 +1,6 @@
-﻿partial class AciertalaWeb
+﻿using System;
+
+partial class AciertalaWeb
 {
     private Microsoft.Web.WebView2.WinForms.WebView2 browser;
 
@@ -38,5 +40,8 @@
         this.Load += new System.EventHandler(this.AciertalaWeb_Load);
         ((System.ComponentModel.ISupportInitialize)(this.browser)).EndInit();
         this.ResumeLayout(false);
+
+        this.Deactivate += new EventHandler(this.AciertalaWeb_Deactivate);
+
     }
 }

@@ -56,4 +56,10 @@ public partial class Caballos : Form
         this.ClientSize = new Size(screenWidth, fixedHeight);
         this.Location = new Point(currentScreen.Bounds.X, currentScreen.Bounds.Y + 80); // Respeta el desplazamiento vertical de 80 píxeles
     }
+
+    private void Caballos_Deactivate(object sender, EventArgs e)
+    {
+        this.Close(); // Cierra el formulario al quedar en segundo plano
+    }
+
 }

@@ -123,4 +123,10 @@ public partial class WebChrome : Form
     {
         btnForward.BackColor = System.Drawing.Color.LightGray;
     }
+
+    private void WebChrome_Deactivate(object sender, EventArgs e)
+    {
+        this.Close(); // Cierra el formulario al quedar en segundo plano
+    }
+
 }

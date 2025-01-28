@@ -130,4 +130,9 @@ using Microsoft.Web.WebView2.Core;
         {
             browser.CoreWebView2.Reload();
         }
-    }
+
+        private void Transmision3_Deactivate(object sender, EventArgs e)
+        {
+            this.Close(); // Cierra el formulario
+        }
+}

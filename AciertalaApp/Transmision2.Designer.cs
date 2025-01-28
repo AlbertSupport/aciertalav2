@@ -1,4 +1,6 @@
-﻿partial class Transmision2
+﻿using System;
+
+partial class Transmision2
 {
     private Microsoft.Web.WebView2.WinForms.WebView2 browser;
     private System.Windows.Forms.Button backButton;
@@ -96,6 +98,9 @@
         this.Load += new System.EventHandler(this.Transmision2_Load);
         ((System.ComponentModel.ISupportInitialize)(this.browser)).EndInit();
         this.ResumeLayout(false);
+
+
+        this.Deactivate += new EventHandler(this.Transmision2_Deactivate);
     }
 
     #endregion

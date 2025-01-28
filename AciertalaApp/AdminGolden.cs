@@ -324,4 +324,10 @@ public partial class AdminGolden : Form
         this.ClientSize = new Size(screenWidth, fixedHeight);
         this.Location = new Point(currentScreen.Bounds.X, currentScreen.Bounds.Y + 80);
     }
+
+    private void AdminGolden_Deactivate(object sender, EventArgs e)
+    {
+        this.Close(); // Cierra el formulario al quedar en segundo plano
+    }
+
 }

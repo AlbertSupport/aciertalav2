@@ -1,4 +1,6 @@
-﻿partial class Transmision1
+﻿using System;
+
+partial class Transmision1
 {
     private Microsoft.Web.WebView2.WinForms.WebView2 browser;
 
@@ -38,5 +40,7 @@
         this.Load += new System.EventHandler(this.Transmision1_Load);
         ((System.ComponentModel.ISupportInitialize)(this.browser)).EndInit();
         this.ResumeLayout(false);
+
+        this.Deactivate += new EventHandler(this.Transmision1_Deactivate);
     }
 }

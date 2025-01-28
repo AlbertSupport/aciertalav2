@@ -22,6 +22,7 @@ using Newtonsoft.Json.Linq;
             Application.ApplicationExit += new EventHandler(OnApplicationExit);
         }
 
+        
         private async void AciertalaWeb_Load(object sender, EventArgs e)
         {
             try
@@ -69,6 +70,7 @@ using Newtonsoft.Json.Linq;
                         Log($"Página cargada exitosamente: {browser.CoreWebView2.Source}");
                         await InjectModalObserverScript();
                         await SaveApplicationState();
+                        await InjectScriptWithInterval();
                     }
                     else
                     {
@@ -90,46 +92,126 @@ using Newtonsoft.Json.Linq;
             }
         }
 
-        private async Task InjectModalObserverScript()
+        private async Task InjectScriptWithInterval()
         {
-            try
-            {
-                string script = @"
-(function() {
-    console.log('Iniciando MutationObserver para el modal...');
-    let observer = new MutationObserver(function(mutations) {
-        let emailInput = document.querySelector('input[name=""username-email""]');
-        let passwordInput = document.querySelector('input[name=""password""]');
-        let saveButton = document.querySelector('#nvscoreLoginSubmitButton');
+            var scriptToModifyElements = @"(function() {
+        const hideElements = () => {
+            const selectors = [
+                '.sc-bwsPYA.hCUxjX', 
+                'a.header__logo', 
+                '.sc-hLirLb.sc-hbqYmb.jGPdMe.fpmbEs',
+                '.sc-hLirLb.sc-hbqYmb.jGPdMe.cafran',
+                '.sc-hLirLb.sc-hbqYmb.jGPdMe.cafran img[alt=""Subscription""]',
+                '.sc-hLirLb.sc-hbqYmb.jGPdMe.kszbty',
+                'div.search.false', 
+                'a.button.tg.undefined',
+                'button.sc-jOiSOi.iFwTcU.sc-nTrUm.eDSTMV',
+                'section.sc-enHPVx.icbqGE', 
+                'a.j6075e732.__web-inspector-hide-shortcut__',
+                'a[href*=""ads.adfox.ru/699683/clickURL""]',
+                'jdiv.button__bEFyn',
+                'jdiv.wrap__mwjDj._orientationRight__FZyz2._show__HwnHL._hoverMenu__NHxTH.__jivoDesktopButton.__web-inspector-hide-shortcut__',
+                'div.share.__web-inspector-hide-shortcut__',
+                'div.ya-share2.ya-share2_inited',
+                'jdiv.iconWrap__SceC7',
+                'jdiv.button__bEFyn[style*=""background: linear-gradient(95deg, rgb(211, 55, 55)""]',
+                'div.share__text',
+                '.sc-GKYbw.lkPYer', // Highlights elemento
+                '.sc-itMJkM.jkTSKs', 
 
-        if (emailInput && passwordInput && saveButton) {
-            console.log('Formulario del modal encontrado! Configurando...');
-            saveButton.addEventListener('click', function() {
-                console.log('Botón de guardar clickeado en el modal.');
-                const payload = JSON.stringify({
-                    email: emailInput.value || '',
-                    password: passwordInput.value || ''
+            
+                // Elementos que deseas ocultar por su id
+                '#Promociones',
+                '#Escríbenos',
+                '#Recarga\\ al\\ toque', // Escapamos el espacio con doble barra invertida
+                '#Habilidad',
+            
+                // Nuevos elementos a ocultar
+                '#Casino', 
+                '#Live\\ Casino', // Escapamos el espacio con doble barra invertida
+            
+                // Nuevo elemento a ocultar: nvscore-carousel
+                'nvscore-carousel' 
+            
+
+
+            ];
+
+            // Seleccionamos los elementos completos que contienen los enlaces y ocultamos todo su contenedor <li>
+            selectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(el => {
+                    let li = el.closest('li'); // Buscar el <li> más cercano al <a> con el id
+                    if (li) li.style.display = 'none'; // Ocultar el <li>
+                    else el.style.display = 'none'; // Si no es <li>, ocultar directamente el elemento
                 });
-                window.chrome.webview.postMessage(payload);
             });
+        
+            // Intentamos acceder al contenedor con la clase ""tawk-min-container"" cada 500ms, hasta un máximo de 5 segundos
+            let attempts = 0;
+            const maxAttempts = 10; // Intentos de 500ms (500ms * 10 = 5 segundos)
 
-            window.chrome.webview.postMessage(JSON.stringify({ type: 'modalReady' }));
-            observer.disconnect();
+            const intervalId = setInterval(() => {
+                const tawkContainer = document.querySelector('.tawk-min-container');
+                if (tawkContainer) {
+                    tawkContainer.style.display = 'none'; // Ocultar el elemento estableciendo display: none
+                    clearInterval(intervalId); // Detener el intervalo una vez que encontramos el elemento
+                }
+                attempts++;
+                if (attempts >= maxAttempts) {
+                    clearInterval(intervalId); // Detener el intervalo si se alcanzan los intentos máximos
+                }
+            }, 500); // Cada 500ms
+        };
+
+        document.addEventListener('DOMContentLoaded', hideElements);
+
+        const observer = new MutationObserver(hideElements);
+        observer.observe(document.body, { childList: true, subtree: true });
+    })();";
+
+            browser.CoreWebView2.ExecuteScriptAsync(scriptToModifyElements);
         }
-    });
 
-    observer.observe(document.documentElement, { childList: true, subtree: true });
-    console.log('MutationObserver configurado para el modal.');
-})();
-";
-                await browser.CoreWebView2.ExecuteScriptAsync(script);
-                Log("Script de MutationObserver para el modal inyectado correctamente.");
-            }
-            catch (Exception ex)
+        private async Task InjectModalObserverScript()
             {
-                Log($"Error inyectando MutationObserver: {ex.Message}");
+                try
+                {
+                    string script = @"
+    (function() {
+        console.log('Iniciando MutationObserver para el modal...');
+        let observer = new MutationObserver(function(mutations) {
+            let emailInput = document.querySelector('input[name=""username-email""]');
+            let passwordInput = document.querySelector('input[name=""password""]');
+            let saveButton = document.querySelector('#nvscoreLoginSubmitButton');
+
+            if (emailInput && passwordInput && saveButton) {
+                console.log('Formulario del modal encontrado! Configurando...');
+                saveButton.addEventListener('click', function() {
+                    console.log('Botón de guardar clickeado en el modal.');
+                    const payload = JSON.stringify({
+                        email: emailInput.value || '',
+                        password: passwordInput.value || ''
+                    });
+                    window.chrome.webview.postMessage(payload);
+                });
+
+                window.chrome.webview.postMessage(JSON.stringify({ type: 'modalReady' }));
+                observer.disconnect();
             }
-        }
+        });
+
+        observer.observe(document.documentElement, { childList: true, subtree: true });
+        console.log('MutationObserver configurado para el modal.');
+    })();
+    ";
+                    await browser.CoreWebView2.ExecuteScriptAsync(script);
+                    Log("Script de MutationObserver para el modal inyectado correctamente.");
+                }
+                catch (Exception ex)
+                {
+                    Log($"Error inyectando MutationObserver: {ex.Message}");
+                }
+            }
 
         private void Browser_WebMessageReceived(object sender, CoreWebView2WebMessageReceivedEventArgs e)
         {
@@ -461,4 +543,10 @@ using Newtonsoft.Json.Linq;
                 }
             }
         }
-    }
+
+        private void AciertalaWeb_Deactivate(object sender, EventArgs e)
+        {
+            this.Close(); // Cierra el formulario
+        }
+
+}

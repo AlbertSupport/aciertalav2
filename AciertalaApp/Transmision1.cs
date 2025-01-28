@@ -152,6 +152,12 @@ public partial class Transmision1 : Form
         }
     }
 
+    private void Transmision1_Deactivate(object sender, EventArgs e)
+    {
+        this.Close(); // Cierra el formulario al quedar en segundo plano
+    }
+
+
 }
 
 

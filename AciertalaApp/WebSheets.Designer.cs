@@ -1,4 +1,6 @@
-﻿partial class WebSheets
+﻿using System;
+
+partial class WebSheets
 {
     private Microsoft.Web.WebView2.WinForms.WebView2 browser;
 
@@ -38,5 +40,7 @@
         this.Load += new System.EventHandler(this.WebSheets_Load);
         ((System.ComponentModel.ISupportInitialize)(this.browser)).EndInit();
         this.ResumeLayout(false);
+
+        this.Deactivate += new EventHandler(this.WebSheets_Deactivate);
     }
 }

@@ -27,8 +27,7 @@
     <MapFileExtensions>true</MapFileExtensions>
     <WebPage>index.html</WebPage>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <AutorunEnabled>true</AutorunEnabled>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>4.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -354,11 +353,9 @@
     <EmbeddedResource Include="mas.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Form1.Designer.vb" />
-    <Content Include="Form1.vb">
-      <SubType>Form</SubType>
+    <Content Include="Logo\LogoAciertala.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Logo\LogoAciertala.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
